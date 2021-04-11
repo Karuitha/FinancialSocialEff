@@ -1,0 +1,21 @@
+{
+    "debugBreakpointsState": {
+        "breakpoints": [
+            {
+                "id": 0,
+                "path": "C:/Users/John Karuitha/OneDrive - University of Witwatersrand/Documents/My Thesis/Karuitha and Ojah Data/THESIS/Dissertation/Objective 1 Binary/Chapters in Progress/FinancialSocialEff/plm_function.R",
+                "line_number": 1,
+                "function_steps": "",
+                "function_name": "toplevel",
+                "state": 1,
+                "editor_state": 1,
+                "editor_line_number": 1,
+                "is_pending_debug_completion": false,
+                "needs_updated_steps": false,
+                "type": 1,
+                "is_package_breakpoint": false,
+                "package_name": ""
+            }
+        ]
+    }
+}
