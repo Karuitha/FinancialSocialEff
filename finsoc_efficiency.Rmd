@@ -3,8 +3,13 @@ title: "Efficiency of Microfinance Institutions in Africa"
 author: "John Karuitha and Kalu Ojah"
 date: "`r format(Sys.Date(), '%A, %B %d, %Y')`"
 output:
-  pdf_document: default
-  html_document: default
+  prettydoc::html_pretty:
+    theme: cerulean
+  html_document:
+    css: "my_doc_css.css"
+  pdf_document:
+    toc: true
+    toc_depth: 4
 ---
 
 ```{r setup, include=FALSE}
@@ -921,9 +926,9 @@ modelling_wins <- function(depvar,
 ```
 
 
-## **Abstract**
+## **Abstract** {#centermydoc}
 
->We examine the levels as well as the drivers of financial efficiency, social efficiency, and joint socio-economic efficiency of microfinance institutions (MFIs) in Africa, using data on 705 MFIs across the continent, for 2000-2019. Broadly, our results show a decline in social performance over time but no discernible trend in financial performance; and that the legal status of an MFI particularly drives its social and socio-financial performance. Specifically, operating efficiency, capital adequacy, asset structure, and education are significant drivers of our target efficiencies. More specifically, operating costs relates negatively to financial efficiency, but relate positively to social efficiency and socio-financial efficiency. Capital andequacy relates positively to financial, social and socio-financial efficiencies, whereas asset structure relates negatively to these three efficiency variables. Education relates negatively to financial efficiency but negativey to social and socio-financial efficiencies. Taken together, these results suggest that while access to commercial capital enhances overall efficiency, the quest for profitability (and financial efficiency by extension) appears to diminish social efficiency. Importantly, our analysis shows a trade-off between financial efficiency on the one hand and social efficiency and social-financial efficiency on the other. Our results remain robust after exclusing outliers in the analysis ^[1. Graduate School of Business Administration, University of the Witwatersrand, 2nd St Davids Place, Johannesburg, South Africa, 2050]. ^[Karatina University, School of Business, P.O. Box 1957-10101, Karatina, Kenya]
+>We examine the levels as well as the drivers of financial efficiency, social efficiency, and joint socio-economic efficiency of microfinance institutions (MFIs) in Africa, using data on 705 MFIs across the continent, for 2000-2019. Broadly, our results show a decline in social performance over time but no discernible trend in financial performance; and that the legal status of an MFI particularly drives its social and socio-financial performance. Specifically, operating efficiency, capital adequacy, asset structure, and education are significant drivers of our target efficiencies. More specifically, operating costs relates negatively to financial efficiency, but relate positively to social efficiency and socio-financial efficiency. Capital andequacy relates positively to financial, social and socio-financial efficiencies, whereas asset structure relates negatively to these three efficiency variables. Education relates negatively to financial efficiency but negativey to social and socio-financial efficiencies. Taken together, these results suggest that while access to commercial capital enhances overall efficiency, the quest for profitability (and financial efficiency by extension) appears to diminish social efficiency. Importantly, our analysis shows a trade-off between financial efficiency on the one hand and social efficiency and social-financial efficiency on the other. Our results remain robust after exclusing outliers in the analysis ^[1. Graduate School of Business Administration, University of the Witwatersrand, 2nd St Davids Place, Parktown, Johannesburg, South Africa, 2050]. ^[Karatina University, School of Business, P.O. Box 1957-10101, Karatina, Kenya]
 
 \vspace{10mm}
 
