@@ -93,7 +93,6 @@ others <- tibble(country = c("Equatorial Guinea", "Angola", "Burundi", "Cape Ver
 legal <- rbind(common, civil, others)
 ```
 
-
 ```{r}
 # Bond market data - private and public bond market capitalization to GDP
 bonds <- read_excel("bonds_oluoch.xlsx") %>% 
@@ -191,25 +190,27 @@ mutate(currentlegalstatus = factor(currentlegalstatus,
         
         legal_tradition = factor(legal_tradition, 
                                  
-                                 levels = c("Common", "Civil", "Other"))) %>% 
+                                 levels = c("Common", "Civil", "Other"))
+        
+        ) %>% 
   ## Select required variables 
   select(mfiid, mfiname, year, country, currentlegaldummy, currentlegalstatus, 
          
          percent_of_female_borrowers, operational_self_sufficiency,
          
-         age, legal_tradition, region.x, 
+         age, legal_tradition, region.x, asset_structure, 
          
          assets, kkm, education, pcrdbgdp, stmktcap, prbonds, 
          
          gdp_growth_annual, donations, donations_assets_ratio, 
          
-         profit_margin, debt_to_equity_ratio, capital_asset_ratio, 
+         profit_margin, capital_asset_ratio,
          
-         deposits_to_total_assets, liabilities_and_equity, 
+         debt_to_equity_ratio, operating_expense_assets, 
          
-         operating_expense_assets, average_loan_balance_per_borrower,
+         average_loan_balance_per_borrower, gross_loan_portfolio_to_total_assets, 
          
-         gross_loan_portfolio_to_total_assets, net_fixed_assets) %>% 
+         deposits_to_total_assets, liabilities_and_equity) %>% 
   
           ## Rename region
          rename(region = region.x) %>% 
@@ -226,9 +227,11 @@ mutate(currentlegalstatus = factor(currentlegalstatus,
   
   group_by(mfiid) %>% 
   
-  mutate(percent_of_female_borrowers = replace_na(percent_of_female_borrowers, 
+  mutate(asset_structure = replace_na(asset_structure, median(asset_structure, na.rm = TRUE)), 
+         
+         percent_of_female_borrowers = replace_na(percent_of_female_borrowers, 
                                                   
-                            median(percent_of_female_borrowers, na.rm = TRUE)),
+                                                  median(percent_of_female_borrowers, na.rm = TRUE)),
          
          operational_self_sufficiency = replace_na(operational_self_sufficiency, 
                                                    
@@ -240,35 +243,23 @@ mutate(currentlegalstatus = factor(currentlegalstatus,
          
          donations_assets_ratio = replace_na(donations_assets_ratio, 
                                              
-                                  median(donations_assets_ratio, na.rm = TRUE)),
+                                  median(donations_assets_ratio, na.rm = TRUE)), 
          
-         profit_margin = replace_na(profit_margin, median(profit_margin, na.rm = TRUE)), 
+         profit_margin = replace_na(profit_margin, median(profit_margin, na.rm = TRUE)),
          
-         capital_asset_ratio = replace_na(capital_asset_ratio, median(capital_asset_ratio, na.rm = TRUE)), 
+         capital_asset_ratio = replace_na(capital_asset_ratio, median(capital_asset_ratio, na.rm = TRUE)),
          
-         debt_to_equity_ratio = replace_na(debt_to_equity_ratio, median(debt_to_equity_ratio, na.rm = TRUE)), 
+         debt_to_equity_ratio = replace_na(debt_to_equity_ratio, median(debt_to_equity_ratio, na.rm = TRUE)),
          
-         deposits_to_total_assets = replace_na(deposits_to_total_assets, 
-                                               
-                                               median(deposits_to_total_assets, na.rm = TRUE)),
+         operating_expense_assets = replace_na(operating_expense_assets, median(operating_expense_assets, na.rm = TRUE)),
          
-         liabilities_and_equity = replace_na(liabilities_and_equity, 
-                                             
-                                             median(liabilities_and_equity, na.rm = TRUE)), 
+         deposits_to_total_assets = replace_na(deposits_to_total_assets, median(deposits_to_total_assets, na.rm = TRUE)), 
          
-         operating_expense_assets = replace_na(operating_expense_assets, 
-                                               
-                                               median(operating_expense_assets, na.rm = TRUE)), 
+average_loan_balance_per_borrower = replace_na(average_loan_balance_per_borrower, median(average_loan_balance_per_borrower, na.rm = TRUE)),
+    
+liabilities_and_equity = replace_na(liabilities_and_equity, median(liabilities_and_equity, na.rm = TRUE)  
          
-         average_loan_balance_per_borrower = replace_na(average_loan_balance_per_borrower, 
-                                                        
-                                                        median(average_loan_balance_per_borrower, na.rm = TRUE)), 
-         
-         gross_loan_portfolio_to_total_assets = replace_na(gross_loan_portfolio_to_total_assets, 
-                                                        
-                                                        median(gross_loan_portfolio_to_total_assets, na.rm = TRUE)),
-         
-         net_fixed_assets = replace_na(net_fixed_assets, median(net_fixed_assets, na.rm = TRUE))) %>% 
+         )) %>% 
   
   ungroup() %>% 
   
@@ -300,35 +291,25 @@ mutate(currentlegalstatus = factor(currentlegalstatus,
          
          donations_assets_ratio = replace_na(donations_assets_ratio, 
                                              
-                                  median(donations_assets_ratio, na.rm = TRUE)), 
+                                  median(donations_assets_ratio, na.rm = TRUE)),
          
-         profit_margin = replace_na(profit_margin, median(profit_margin, na.rm = TRUE)), 
+         profit_margin = replace_na(profit_margin, median(profit_margin, na.rm = TRUE)),
          
-         capital_asset_ratio = replace_na(capital_asset_ratio, median(capital_asset_ratio, na.rm = TRUE)), 
+         capital_asset_ratio = replace_na(capital_asset_ratio, median(capital_asset_ratio, na.rm = TRUE)),
          
-         debt_to_equity_ratio = replace_na(debt_to_equity_ratio, median(debt_to_equity_ratio, na.rm = TRUE)), 
+         asset_structure = replace_na(asset_structure, median(asset_structure, na.rm = TRUE)),
          
-         deposits_to_total_assets = replace_na(deposits_to_total_assets, median(deposits_to_total_assets, 
-                                                                                
-                                                                                na.rm = TRUE)), 
+         debt_to_equity_ratio = replace_na(debt_to_equity_ratio, median(debt_to_equity_ratio, na.rm = TRUE)),
          
-         liabilities_and_equity = replace_na(liabilities_and_equity, 
-                                             
-                                             median(liabilities_and_equity, na.rm = TRUE)), 
+         operating_expense_assets = replace_na(operating_expense_assets, median(operating_expense_assets, na.rm = TRUE)),
          
-         operating_expense_assets = replace_na(operating_expense_assets, 
-                                               
-                                               median(operating_expense_assets, na.rm = TRUE)), 
+average_loan_balance_per_borrower = replace_na(average_loan_balance_per_borrower, median(average_loan_balance_per_borrower, na.rm = TRUE)),
          
-         average_loan_balance_per_borrower = replace_na(average_loan_balance_per_borrower, 
-                                                        
-                                                        median(average_loan_balance_per_borrower, na.rm = TRUE)), 
+         deposits_to_total_assets = replace_na(deposits_to_total_assets, median(deposits_to_total_assets, na.rm = TRUE)), 
          
-         gross_loan_portfolio_to_total_assets = replace_na(gross_loan_portfolio_to_total_assets, 
-                                                        
-                                                        median(gross_loan_portfolio_to_total_assets, na.rm = TRUE)),
+liabilities_and_equity = replace_na(liabilities_and_equity, median(deposits_to_total_assets, na.rm = TRUE))
          
-         net_fixed_assets = replace_na(net_fixed_assets, median(net_fixed_assets, na.rm = TRUE))) %>% 
+         ) %>% 
   
   ungroup() %>% 
   
@@ -358,38 +339,33 @@ mutate(finsoc = factor(finsoc, levels = c("FF", "SF", "FS", "SS"))) %>%
   
 ## replace negative donations with zero
 mutate(donations = case_when(donations <= 0 ~ 1,
-                             TRUE ~ donations + 1)) %>% 
+                             TRUE ~ donations)) %>% 
   
-mutate(stmktcap = if_else(stmktcap == 0, 1, stmktcap + 1)) %>% 
-  
-mutate(donations_assets_ratio = case_when(donations_assets_ratio <= 0 ~ 1,
-                             TRUE ~ donations_assets_ratio + 1)) %>% 
-  
-mutate(profit_margin = case_when(profit_margin < -50 ~ 51,
-                                 TRUE ~ profit_margin + 51)) %>% 
+## Create the DEA variables by removing zeros 
 
-## Remove zeros and negatives
-mutate(dea_oss = operational_self_sufficiency + 2, 
-       
-       dea_average_loan = average_loan_balance_per_borrower + 2,
-       
-       asset_structure = net_fixed_assets / (liabilities_and_equity + 1)) %>% 
+mutate(
+dea_liab_equity = liabilities_and_equity + 1,
+
+dea_operating_exp = operating_expense_assets + 1,
+
+dea_percent_women = percent_of_female_borrowers + 1,
+
+dea_average_loan = average_loan_balance_per_borrower + 1,
+
+dea_oss = operational_self_sufficiency + 2) %>% 
   
-## mean normalize the inputs and outputs and eliminate zeros
-mutate(dea_oss = dea_oss/ mean(dea_oss),
-       
-       dea_average_loan = dea_average_loan/ mean(dea_average_loan), 
-       
-       dea_average_loan = (1/dea_average_loan) + 1,
-       
-       dea_percent_women = 1 + (percent_of_female_borrowers / mean(percent_of_female_borrowers)),
-       
-       dea_gross_loans = 1 + (gross_loan_portfolio_to_total_assets/ mean(gross_loan_portfolio_to_total_assets)),
-       
-       dea_operating_exp = (1 +  operating_expense_assets/ mean(operating_expense_assets)), 
-       
-       dea_liab_equity = (1 + liabilities_and_equity / mean(liabilities_and_equity)))
+## Normalize the data for DEA analysis 
+mutate(
   
+  dea_liab_equity = dea_liab_equity / mean(dea_liab_equity),
+
+dea_operating_exp = dea_operating_exp / mean(dea_operating_exp),
+
+dea_percent_women = dea_percent_women / mean(dea_percent_women),
+
+dea_average_loan = dea_average_loan / mean(dea_average_loan),
+
+dea_oss = dea_oss / mean(dea_oss))
 
 ## Write a csv for the data
 my_data %>% write.csv(., "data.csv")
@@ -418,9 +394,93 @@ data5 %>% write.csv(., "data5.csv")
 ```
 
 
+######################################################################### 
+
 ```{r}
+### Important functions ----
+## Regression function - fixed, random and pooling
+modelling <- function(data, depvar,
+                      effect = c("individual", "twoways", "time", "nested"),
+                      model = c("within", "random", "ht", "between", "pooling", "fd"),
+                      inst.method = c("bvk", "baltagi", "am", "bms"),
+                      random.method = c("swar", "amemiya", "walhus", "nerlove"),
+                      digits = 4, index = c("mfiid", "year")){
+  
+## Load libraries
+  library(plm)
+  library(broom)
+  library(pcse)
+  library(car)
+  library(zoo)
+  library(lmtest)
+  library(broom)
+  library(stargazer)
+  
+  ## match arguments
+  effect <- match.arg(effect)
+  model <- match.arg(model)
+  inst.method <- match.arg(inst.method)
+  random.method <- match.arg(random.method)
+  
+  ## Run the Model
+  unadjusted <- plm(depvar ~ currentlegalstatus + 
+            age + legal_tradition + kkm +
++           asset_structure + pcrdbgdp + stmktcap +
+            profit_margin + year, 
+          data = data, effect = effect,
+          model = model,inst.method = inst.method, 
+          index = index, 
+          digits = digits)
+
+unadjusted
+}
+```
+
+########################################################################## 
+
+```{r}
+## Hausmann Test function
+hausmann_test <- function(data, depvar){
+  
+  library(plm)
+  library(broom)
+  library(pcse)
+  library(car)
+  library(zoo)
+  library(lmtest)
+  library(broom)
+  
+  fixed <- plm(depvar ~ currentlegalstatus + age + region +
++           operating_expense_assets + 
++           donations_assets_ratio + 
++           capital_asset_ratio +
++           asset_structure + log(assets) + 
++           education + profit_margin, 
+               data = data, effect = "individual", model = "within", 
+      index = c("mfiid", "year")) 
+  
+  random <- plm(depvar ~ currentlegalstatus + age + region +
++           operating_expense_assets + 
++           donations_assets_ratio + 
++           capital_asset_ratio +
++           asset_structure + log(assets) + 
++           education + profit_margin, 
+          data = data, effect = "individual", model = "random", 
+      index = c("mfiid", "year"))
+ 
+  broom::tidy(phtest(fixed, random))
+}
+
+```
+
+############################################ 
+
+```{r}
+# Median function
 median_n <- function(x){median(x, na.rm = TRUE)}
 ```
+
+############################################ 
 
 ```{r}
 theme_niwot <- function(){
@@ -446,8 +506,6 @@ theme_niwot <- function(){
                                            size = 2, linetype = "blank"))
 }
 ```
-
-
 
 ```{r}
 ###########################################
@@ -533,8 +591,6 @@ GeomFlatViolin <-
 ###########################################################
 ```
 
-
-
 ```{r}
 # plotting function
 plotter <- function(data, x , y, z, xlabel, ylabel, title){
@@ -602,257 +658,25 @@ library(wesanderson)  # for nice colours
     
     theme_niwot() + scale_y_log10()
 }
-```
 
-
-```{r}
-hausmann_test <- function(data, depvar){
+##################################################
+# plotting scatter diagrams 
+plotter_scatter <- function(data, x, y, z, 
+                            xlab, ylab, title) {
   
+  # Load libraries
+  library(tidyverse)
+  library(gghalves)
+  library(ggeasy)
+  library(ggthemes)
   
-  library(broom)
-  library(pcse)
-  library(car)
-  library(zoo)
-  library(lmtest)
-  library(broom)
-
-  ################################################# 
-  fixed <- plm(depvar ~ age + currentlegalstatus + 
-                      
-                      legal_tradition + 
-                      
-                      assets + kkm + pcrdbgdp + 
-                      
-                      log(stmktcap) + log(profit_margin) + 
-                      
-                      log(donations_assets_ratio) + 
-                      
-                      gdp_growth_annual + factor(year), 
-               
-                      data = my_data, 
-               
-                      effect = "individual", 
-               
-                      model = "within", 
-               
-                 index = c("mfiid", "year")) 
-  
-#################################################
-  random <- plm(depvar ~ age + currentlegalstatus + 
-                      
-                      legal_tradition + 
-                      
-                      assets + kkm + pcrdbgdp + 
-                      
-                      log(stmktcap) + log(profit_margin) + 
-                      
-                      log(donations_assets_ratio) + 
-                      
-                      gdp_growth_annual + factor(year), 
-                
-          data = my_data, 
-          
-          effect = "individual", 
-          
-          model = "random",
-          
-          index = c("mfiid", "year"))
- 
-  broom::tidy(phtest(fixed, random))
+  # write the function
+  data %>% ggplot(aes(x = {{x}}, y = {{y}}, col = {{z}})) + 
+    
+    geom_point(shape = 1, size = 2) + 
+    
+    labs(x = xlab, y = ylab, title = title)
 }
-```
-
-
-
-```{r}
-## Regression function - fixed, random and pooling ---- 
-modelling <- function(depvar,
-                      effect = c("individual", "twoways", "time", "nested"),
-                      model = c("within", "random", "ht", "between", "pooling", "fd"),
-                      inst.method = c("bvk", "baltagi", "am", "bms"),
-                      random.method = c("swar", "amemiya", "walhus", "nerlove"),
-                      digits = 4, index = c("mfiid", "year")){
-  
-  ## Load libraries
-  library(plm)
-  library(broom)
-  library(pcse)
-  library(car)
-  library(zoo)
-  library(lmtest)
-  library(broom)
-  library(stargazer)
-  
-  ## match arguments
-  effect <- match.arg(effect)
-  model <- match.arg(model)
-  inst.method <- match.arg(inst.method)
-  random.method <- match.arg(random.method)
-
-  
-  ## Run the Model
-  plm(depvar ~ age + currentlegalstatus + 
-                      
-                      legal_tradition + 
-                      
-                      assets + kkm + pcrdbgdp + 
-                      
-                      log(stmktcap) + log(profit_margin) + 
-                      
-                      log(donations_assets_ratio) + 
-                      
-                      gdp_growth_annual + factor(year), 
-                      
-                      data = my_data,
-                    
-                    effect = effect,
-                    
-                    model = model, 
-                    
-                    inst.method = inst.method, 
-                    
-                    index = index, 
-                    
-                    digits = digits)
-  
-  ## Output results
-       
-       ## Correct standard errors for heteroscedasticity 
-       ## And cross-sectional dependence
-       
-       #coeftest(unadjusted, vcov. = function(x) {
-         #vcovBK(x, method = "arellano", type="HC1", cluster = "group")
-       #})
-}
-
-```
-
-
-```{r}
-## Regression function - fixed, random and pooling ---- 
-modelling3 <- function(depvar,
-                      effect = c("individual", "twoways", "time", "nested"),
-                      model = c("within", "random", "ht", "between", "pooling", "fd"),
-                      inst.method = c("bvk", "baltagi", "am", "bms"),
-                      random.method = c("swar", "amemiya", "walhus", "nerlove"),
-                      digits = 4, index = c("mfiid", "year")){
-  
-  ## Load libraries
-  library(plm)
-  library(broom)
-  library(pcse)
-  library(car)
-  library(zoo)
-  library(lmtest)
-  library(broom)
-  library(stargazer)
-  
-  ## match arguments
-  effect <- match.arg(effect)
-  model <- match.arg(model)
-  inst.method <- match.arg(inst.method)
-  random.method <- match.arg(random.method)
-
-  
-  ## Run the Model
-  plm(depvar ~ age + currentlegalstatus + 
-                      
-                      legal_tradition + 
-                      
-                      assets + kkm + pcrdbgdp + 
-                      
-                      log(stmktcap) + log(profit_margin) + 
-                      
-                      log(donations_assets_ratio) + 
-                      
-                      gdp_growth_annual + factor(year), 
-                      
-                      data = data3,
-                    
-                    effect = effect,
-                    
-                    model = model, 
-                    
-                    inst.method = inst.method, 
-                    
-                    index = index, 
-                    
-                    digits = digits)
-  
-  ## Output results
-       
-       ## Correct standard errors for heteroscedasticity 
-       ## And cross-sectional dependence
-       
-       #coeftest(unadjusted, vcov. = function(x) {
-         #vcovBK(x, method = "arellano", type="HC1", cluster = "group")
-       #})
-}
-
-```
-
-
-```{r}
-## Regression function - fixed, random and pooling ---- 
-modelling5 <- function(depvar,
-                      effect = c("individual", "twoways", "time", "nested"),
-                      model = c("within", "random", "ht", "between", "pooling", "fd"),
-                      inst.method = c("bvk", "baltagi", "am", "bms"),
-                      random.method = c("swar", "amemiya", "walhus", "nerlove"),
-                      digits = 4, index = c("mfiid", "year")){
-  
-  ## Load libraries
-  library(plm)
-  library(broom)
-  library(pcse)
-  library(car)
-  library(zoo)
-  library(lmtest)
-  library(broom)
-  library(stargazer)
-  
-  ## match arguments
-  effect <- match.arg(effect)
-  model <- match.arg(model)
-  inst.method <- match.arg(inst.method)
-  random.method <- match.arg(random.method)
-
-  
-  ## Run the Model
-  plm(depvar ~ age + currentlegalstatus + 
-                      
-                      legal_tradition + 
-                      
-                      assets + kkm + pcrdbgdp + 
-                      
-                      log(stmktcap) + log(profit_margin) + 
-                      
-                      log(donations_assets_ratio) + 
-                      
-                      gdp_growth_annual + factor(year), 
-                      
-                      data = data5,
-                    
-                    effect = effect,
-                    
-                    model = model, 
-                    
-                    inst.method = inst.method, 
-                    
-                    index = index, 
-                    
-                    digits = digits)
-  
-  ## Output results
-       
-       ## Correct standard errors for heteroscedasticity 
-       ## And cross-sectional dependence
-       
-       #coeftest(unadjusted, vcov. = function(x) {
-         #vcovBK(x, method = "arellano", type="HC1", cluster = "group")
-       #})
-}
-
 ```
 
 
@@ -869,93 +693,18 @@ remove_outliers <- function(x, na.rm = TRUE, ...) {
 
 data_wins_capital_structures <- my_data %>% 
   
-  select(assets, kkm, pcrdbgdp, 
-                      
-                      stmktcap, profit_margin,
-                      
-                      donations_assets_ratio,
-                      
-                      gdp_growth_annual, 
-         
-         capital_asset_ratio, 
-         
-         deposits_to_total_assets)
+  select(where(is.numeric), -mfiid, -year)
 
 
 data_wins <- sapply(data_wins_capital_structures, remove_outliers) %>% 
   
-  cbind(my_data[,c("mfiid", "year", "age", "currentlegalstatus", 
-                      
-                      "legal_tradition")]) %>% 
+  cbind(my_data[,c("mfiid", "mfiname", "region", "year", "age", 
+                   
+                   "currentlegalstatus", "legal_tradition")]) %>% 
   
-  na.omit() %>% 
+na.omit() %>% 
   
   relocate(mfiid:legal_tradition)
-```
-
-
-
-```{r}
-## Regression function - fixed, random and pooling ---- 
-modelling_wins <- function(depvar,
-                      effect = c("individual", "twoways", "time", "nested"),
-                      model = c("within", "random", "ht", "between", "pooling", "fd"),
-                      inst.method = c("bvk", "baltagi", "am", "bms"),
-                      random.method = c("swar", "amemiya", "walhus", "nerlove"),
-                      digits = 4, index = c("mfiid", "year")){
-  
-  ## Load libraries
-  library(plm)
-  library(broom)
-  library(pcse)
-  library(car)
-  library(zoo)
-  library(lmtest)
-  library(broom)
-  library(stargazer)
-  
-  ## match arguments
-  effect <- match.arg(effect)
-  model <- match.arg(model)
-  inst.method <- match.arg(inst.method)
-  random.method <- match.arg(random.method)
-
-  
-  ## Run the Model
-  plm(depvar ~ age + currentlegalstatus + 
-                      
-                      legal_tradition + 
-                      
-                      assets + kkm + pcrdbgdp + 
-                      
-                      log(stmktcap) + log(profit_margin) + 
-                      
-                      log(donations_assets_ratio) + 
-                      
-                      gdp_growth_annual + factor(year), 
-                      
-                      data = data_wins,
-                    
-                    effect = effect,
-                    
-                    model = model, 
-                    
-                    inst.method = inst.method, 
-                    
-                    index = index, 
-                    
-                    digits = digits)
-  
-  ## Output results
-       
-       ## Correct standard errors for heteroscedasticity 
-       ## And cross-sectional dependence
-       
-       #coeftest(unadjusted, vcov. = function(x) {
-         #vcovBK(x, method = "arellano", type="HC1", cluster = "group")
-       #})
-}
-
 ```
 
 
@@ -964,7 +713,7 @@ envelope <- function(input, output){
                       library(rDEA)
                       dea.robust (input, 
                       output, W = NULL, model = "output", 
-                      RTS = "variable", B = 1000, 
+                      RTS = "variable", B = 500, 
                       alpha = 0.05, bw = "bw.ucv", 
                       bw_mult = 1)}
 ```
@@ -974,7 +723,7 @@ envelope <- function(input, output){
 
 ## **Abstract** {#centermydoc}
 
->We examine the levels and drivers of financial efficiency, social efficiency, and joint socio-economic efficiency of microfinance institutions (MFIs) in Africa, using data on 705 MFIs across the continent, for 2000-2019. Broadly, our results show a decline in social performance over time but no discernible trend in financial performance. The legal status of an MFI mainly drives its social and socio-financial performance. Specifically, operating efficiency, capital adequacy, asset structure, and education are significant drivers of our target efficiencies. More specifically, operating costs relate negatively to financial efficiency and relate positively to social efficiency and socio-financial efficiency. Capital adequacy relates positively to financial, social and socio-financial efficiencies, whereas asset structure relates negatively to these three efficiency variables. Education relates negatively to financial efficiency but negatively to social and socio-financial efficiencies. These results suggest that while access to commercial capital enhances the overall efficiency, the quest for profitability (and financial efficiency by extension) diminishes social efficiency. Importantly, our analysis shows a trade-off between financial efficiency on the one hand and social efficiency and social-financial efficiency on the other. Our results remain robust after excluding outliers in the analysis. ^[1. Graduate School of Business Administration, University of the Witwatersrand, 2nd St Davids Place, Parktown, Johannesburg, South Africa, 2050]. ^[Karatina University, School of Business, P.O. Box 1957-10101, Karatina, Kenya]
+>We examine the drivers as well as levels of financial efficiency, social efficiency, and joint socio-financial efficiency of microfinance institutions (MFIs) in Africa for the period 2000-2019. Broadly, our results show a decline in social performance over time but no discernible trend in financial performance. The legal status of an MFI mainly drives its social and socio-financial performance. Specifically, operating efficiency, capital adequacy, asset structure, and education are significant drivers of our target efficiencies. More specifically, operating costs relate negatively to financial efficiency and relate positively to social efficiency and socio-financial efficiency. Capital adequacy relates positively to financial, social and socio-financial efficiencies, whereas asset structure relates negatively to these three efficiency variables. Education relates negatively to financial efficiency but negatively to social and socio-financial efficiencies. These results suggest that while access to commercial capital enhances the overall efficiency, the quest for profitability (and financial efficiency by extension) diminishes social efficiency. Importantly, our analysis shows a trade-off between financial efficiency on the one hand and social efficiency and social-financial efficiency on the other. Our results remain robust after excluding outliers in the analysis. ^[1. Graduate School of Business Administration, University of the Witwatersrand, 2nd St Davids Place, Parktown, Johannesburg, South Africa, 2050]. ^[Karatina University, School of Business, P.O. Box 1957-10101, Karatina, Kenya]
 
 \vspace{10mm}
 
@@ -985,11 +734,11 @@ envelope <- function(input, output){
 
 ## Introduction
 
-This work examines the drivers and levels of microfinance institutions' financial and social efficiencies (MFIs) in Africa, considering the transformation of MFIs from not-for-profit ventures to commercial entities. Specifically, the research examines the drivers of social efficiencies on the one hand. It critically examines the drivers of the joint financial and social efficiency (socio-financial efficiency) of MFIs in Africa on the other hand. MFIs have a dual mission. First, they derive legitimacy by availing financial services to the poor and other often financially excluded members of society (Marconatto et al., 2016). To achieve this social goal, MFIs have in the past primarily relied on private donations and government subsidies (D'Espallier et al., 2017). However, with the rise of neo-liberalism (Bateman, 2010), donors and stakeholders increasingly presume that MFIs should be financially self-sustaining, which is the second goal of MFIs (Beisland et al., 2017). Besides, political and economic uncertainties surrounding donations and subsidies reinforce the need for MFIs to be financially independent (Armendáriz et al., 2013, Garmaise and Natividad, 2013).
+This work examines the drivers and levels of microfinance institutions' financial and social efficiencies (MFIs) in Africa, considering the transformation of MFIs from not-for-profit ventures to commercial entities. Specifically, the research examines the drivers of social efficiencies on the one hand. It critically examines the drivers of the joint financial and social efficiency (socio-financial efficiency) of MFIs in Africa on the other hand. MFIs have a dual mission. First, they derive legitimacy by availing financial services to the poor and other often financially excluded members of society [@marconatto2016going]. To achieve this social goal, MFIs have in the past primarily relied on private donations and government subsidies [@d2017ngos]. However, with the rise of neo-liberalism [@bateman2010doesn], donors and stakeholders increasingly presume that MFIs should be financially self-sustaining, which is the second goal of MFIs [@beisland2019commercialization]. Besides, political and economic uncertainties surrounding donations and subsidies reinforce the need for MFIs to be financially independent [@armendariz2011mission; @garmaise2013cheap].
 
-If MFIs are to be financially sustainable, they should not do so by neglecting their social mission—the social mission of MFIs centres around providing appropriate and affordable financial services to the financially excluded. In Africa, the financially excluded comprises mainly women, youth and rural dwellers. When MFIs convert to the commercial model, they have to attain the financial objective of making profits over and above the social mission. The pursuit of financial and social objectives makes MFIs hybrid organisations. MFIs operate in peculiar commercial environments, yet their hybrid nature requires them to pursue and achieve an additional, core social objective. It is notable, though, that purely commercial firms are also under increasing pressure to also maximise social welfare primarily through corporate social responsibility (CSR) interventions and the rise of the Environmental, Social and Governance (ESG) accounting (Van Duuren et al., 2016). However, the expectation for business firms to exclusively meet social goals may not be as elevated as the expectations for social and hybrid enterprises, like MFIs. Their mission achievement predicated on meeting their social mandate.
+If MFIs are to be financially sustainable, they should not do so by neglecting their social mission—the social mission of MFIs centres around providing appropriate and affordable financial services to the financially excluded. In Africa, the financially excluded comprises mainly women, youth and rural dwellers. When MFIs convert to the commercial model, they have to attain the financial objective of making profits over and above the social mission. The pursuit of financial and social objectives makes MFIs hybrid organisations. MFIs operate in peculiar commercial environments, yet their hybrid nature requires them to pursue and achieve an additional, core social objective. It is notable, though, that purely commercial firms are also under increasing pressure to also maximise social welfare primarily through corporate social responsibility (CSR) interventions and the rise of the Environmental, Social and Governance (ESG) accounting [@van2016esg]. However, the expectation for business firms to exclusively meet social goals may not be as elevated as the expectations for social and hybrid enterprises, like MFIs. Their mission achievement predicated on meeting their social mandate.
 
-In this study, we utilise Data Envelopment Analysis (DEA) to generate an index of efficiency scores for financial performance, social performance, and the joint socio-financial performance of MFIs in Africa. In examining efficiency, we focus on the extent to which MFIs optimise their output for a given level of inputs, using the output-oriented DEA approach. The alternative input-oriented approach deals with the ability of MFIs to minimise inputs for a given level of output. The choice of the output-oriented method derives from the functions of MFIs, that is, reaching out to the financially excluded sustainably. Although the optimisation of inputs is also desirable, the outputs are more relevant to this study. The inputs are liabilities, equity and operating expense to assets ratio. The metric for the financial outcome is operational self-sufficiency (OSS). Simultaneously, the average loan balance per borrower, per cent of women borrowers, and the gross loan portfolio percentage to total assets are the social performance indicators.
+In this study, we utilise Data Envelopment Analysis (DEA) to generate an index of efficiency scores for financial performance, social performance, and the joint socio-financial performance of MFIs in Africa. In examining efficiency, we focus on the extent to which MFIs optimise their output for a given level of inputs, using the output-oriented DEA approach. The alternative input-oriented approach deals with the ability of MFIs to minimise inputs for a given level of output. The choice of the output-oriented method derives from the functions of MFIs, that is, reaching out to the financially excluded sustainably. Although the optimisation of inputs is also desirable, the outputs are more relevant to this study. The DEA inputs are liabilities and equity, and operating expense to assets ratio. The output metric for the financial outcome is operational self-sufficiency (OSS). Simultaneously, the average loan balance per borrower, per cent of women borrowers, and the gross loan portfolio percentage to total assets are the social performance output indicators.
 
 This research extends existing knowledge in three primary ways. First, the work sheds light on the determinants of the simultaneous drivers of the financial and social efficiencies of MFIs, especially in Africa, where data challenges had hitherto hindered relevant research. Secondly, as noted earlier, the paradigm shift towards the commercial approach means that MFIs should meet both financial and social objectives (D’Espallier et al., 2017, Chahine and Tannir, 2010). However, the extant research on the drivers of financial and social efficiencies tends to examine each objective separately instead of viewing them as two sides of the same coin (Efendic and Hadziahmetovic, 2017, Gutiérrez-Nieto et al., 2009).
 
@@ -1105,34 +854,50 @@ Financial Performance outputs
 #### Independent Variables:
 The independent variables are as follows,
 
-- Age: The length of time which the MFI has been in operation. MIX [^1] classifies MFIs into three age groups: new (0 - 4 years), young (4 - 8 years), and mature (over eight (8) years). The variable enters the model as a dummy. We hypothesise that older, and hence larger MFIs are more likely to be more efficient given that they can draw from economies of scale, hire better managers, and have a richer experience in running microfinance programs.
+```{r}
+tribble(~ Variable_Description, 
 
-- Asset structure: Asset structure is the ratio of non-current (fixed) assets to total assets of an MFI. Firms with a lower ratio are likely to release more funds for lending and hence experience better social and financial performance.
+"1. Debt-to-Equity Ratio: The ratio of total liabilities to equity, the amount of leverage supported by each unit of capital contributed by shareholders. The ratio shows how an MFI finances its portfolio of assets beyond equity capital to cushion or absorb losses when total assets fall short of all liabilities. Much of the extant research examines the debt-equity mix and its relationship with the performance of MFIs",
 
-- Current legal status: We create a dummy with the MFIs following the NGO Model getting a code of zero and consecutive numbers from one for non-bank financial institutions (NBFIs), rural banks, and credit unions/ cooperatives and others.
+"2. Deposits to Total Assets: The ratio of deposits to assets that aids in determining the extent to which MFIs use deposits to finance assets. NGOs transitioning to the commercial model can mobilise deposits  to fund their operations over and above donations and equity",
 
-- Donations: This variable captures the donations that an NFI receives per annum. We propose that MFIs that get more donations and subsidies have higher social performance metrics and lower financial performance metrics. Donors and governments usually would stress outreach to the poor, although the paradigm shift to the institutional approach is taking root where financial sustainability is also gaining prominence.
+"3. Capital to Assets Ratio: The ratio of total equity to total assets and a slightly modified reciprocal debt-to-equity ratio. Hence, it captures the ability to meet obligations and to absorb unexpected losses using capital contributions by the owner (Kimmel, Weygandt, & Kieso, 2018)",
+        
+"4. Current Legal Status: The legal forms of registration of an MFI are as follows; Commercial Bank, Non-Bank Financial Institution (NBFI), Non-Governmental Organization (NGO), Credit Union/ Cooperative, or Rural Bank. The legal status may dictate the profit orientation and sources of capital for the MFIs. The legal status of an MFI may impact the financing structure in several ways. First, legal status or form typically restricts NGOs from taking deposits, which lowers the debt-equity ratio and deposits to assets, raising the capital asset ratio. Also, NGOs may not venture into capital markets for funds, given their mostly not-for-profit orientation. The opposite is the case for MFIs of commercial banks legal form whose legal status allows for deposits.", "", 
+        
+"5.	Age: MIX classifies MFIs into three categories depending on the time that has elapsed since the MFI started operations- new (0-4 years), young (4-8 years) and mature (over eight years). The variable is hence a dummy. Older firms are likely better established, have a solid reputation and hence likely to attract more debt and deposits. The institutional life cycle view of Bayai and Ikhide (2016) captures the correspondence between age and debt.", "", 
 
-- Governance/ Institutional quality (KKM): We take the first principal component of the World Bank governance indicators (WGI) developed by Kaufmann et al. (2011)(KKM) [^4]. The proposition is that MFIs located in countries with better governance are also likely to have better internal governance, translating to better financial and social performance.
+"6. Legal Tradition (Legal): The indicator is a dummy variable with common law countries coded 0, civil law countries 1, and 2 otherwise as per the classification by Oto-Peralías and Romero-Ávila (2014). Typically, common law countries have relatively better financial infrastructure that allows firms to access financial markets easily. Hence, MFIs in common law countries may exhibit higher debt and equity ratios in their capital structures than those in common law and other legal traditions. (Schnyder, Gerhard, Mathias Siems, & Ruth V. Aguilera, 2018)", "", 
 
-- Leverage: We use debt to equity ratio to proxy leverage and the square of debt to equity ratio to allow for non-linearity of the leverage effects.
+"7. Size (Log of Total Assets): We proxy the size of MFI with the natural logarithm of total assets, again using MIX data. Assets are supported by the sum of capital and liabilities or, equivalently, the total value of resources owned or controlled by the MFI resulting from past and current activities and from which the MFI derives future benefits. We expect firms with more assets to have a higher debt capacity and more debt-to-equity ratios, and lower capital to equity ratios. Large firms draw their strength from holding diversified investments and hence higher capacity to absorb risk. Besides, they have easy access to debt markets(Kurshev & Strebulaev, 2015). Furthermore, these firms are likely to attract more deposits, given the trust they inspire in depositors and their marketing reach (Kimmel et al., 2018). We hypothesise that donations vary positively with the size of MFI, as large, older firms have established a reputation with donors.", "", 
 
-- Size: We proxy the size of MFI with the natural logarithm of total assets. We propose that larger firms should be more efficient due to economies of scale and scope.
+"7. Governance/ Institutional Quality (KKM): We create the country level KKM index using the first principal component of the WGI available in the World Bank databases. The index captures the institutional quality in corruption control, government effectiveness, political stability, the rule of law, and voice and accountability (Kaufmann, Kraay, & Mastruzzi, 2011). Firms in countries with better governance can quickly raise debt finance due to ease of contract enforcement — the result, a high debt-equity ratio and a low capital asset ratio. Similarly, the level of deposits mobilisation may be higher in better-governed countries arising from consumer confidence in legislation relating to deposits protection (La Porta, Lopez-de-Silanes, & Shleifer, 2013; Allen et al., 2014). Lastly, MFIs in countries with low KKM may have higher donations as donors opt to circumvent corrupt government channels. We use the terms institutional quality and governance interchangeably throughout the text", "", 
 
-- Operating expense to total assets ratio: This ratio shows the operating expense to total assets ratio (Gutiérrez-Nieto et al., 2009). A lower ratio relative to the financial and social outputs raises the overall efficiency of an MFI but could negatively lower financial efficiency in particular.
+"8. Private Credit to GDP: We capture the total amount of credit advanced to the private sector by financial intermediaries as a proxy for capital markets development concerning the banking sector following Ito and Kawai (2018). The data source is the Global Financial Development Database, GFDD, of the World Bank (See note 4). Private credit to GDP represents the financial resources provided to the private sector by domestic money banks as a share of GDP. Domestic money banks comprise commercial banks and other financial institutions that accept transferable deposits, such as demand deposits. The data is available in WDI. Financial sector development is central to the acquisition of both equity and debt financing. We hypothesise a high debt to equity ratio, and deposits to assets ratios in countries with more robust financial sectors as financial institutions tend to be highly leveraged.", "", 
 
-- Capital to assets ratio: This ratio captures the equity contribution as a proportion of the total assets of an MFI.
+"9. Stock market capitalisation to GDP: We capture the extent of stock market development using the ratio of stock market capitalisation to GDP to proxy how firms can raise equity capital. Although Africa's equity markets are thin, some relatively large stock markets like South Africa, Kenya, and Ghana exist. The data are from the GFDD.", "", 
 
-- Education:
+"11. Education: Education is the ratio of gross secondary school enrolment to gross primary school enrolment that captures the extent of graduation from elementary to secondary education and the overall literacy rate. The data is available in the WDI. We hypothesise a positive relationship between education and debt/equity ratio, implying a lower capital asset ratio. Similarly, education may enhance the capacity of the populace to use financial products like savings, hence a higher deposit to assets ratio.  Also, education may directly or indirectly influence financial sector development, which eases the acquisition of capital in financial markets (Allen et al., 2014).", "", 
 
+"12. Asset Structure (Tangibility): Asset structure is is measured as the ratio of non-current assets to total assets of an MFI (Microfinance Information Exchange (MIX), 2019). The ratio indicates the extent of investment in physical infrastructure, a significant issue in constraining banking for the poor due to the perceived lack of scale economies to warrant the erection, for instance, of brick and mortar branches (Ledgerwood, 1998). MFIs with a more significant physical presence are likely to attract more deposits. Therefore, they also have a higher capacity to borrow and service debt. Further, tangible assets serve as collateral to protect lenders from the moral hazard problem (Jensen & Meckling, 1976), and hence a positive relationship between debt and asset tangibility (Titman & Wessels, 1988; Kyereboah-Coleman, 2007a).", "", 
 
-[^1]: The Microfinance Information Exchange (MIX) data on microfinance institutions across the globe available at <https://www.themix.org>.
+"13. Profit Margin: The profit margin is the net operating income divided by financial revenue. The ratio represents the ability of MFIs to generate income from the core mandate of offering financial services like lending, savings, insurance, and so on. Profitability may enhance the capacity of an MFI to secure debt, thus leading to a higher debt to equity ratio and low capital to assets ratio. The opposite is the case when an MFI retains earnings and hence raises the level of equity.", "") %>% 
+  
+  kbl(., caption = "Description of Variables", booktabs = TRUE, longtable = TRUE) %>% 
+  
+  kable_paper(full_width = TRUE) %>% 
+  
+  footnote(number = c("MIX Database on www.themix.org and https://datacatalog.worldbank.org/dataset/mix-market", "WDI on https://databank.worldbank.org/source/world-development-indicators.", "WGI/ KKM on https://databank.worldbank.org/source/worldwide-governance-indicators.", "GFDD on https://www.worldbank.org/en/publication/gfdr/data/global-financial-development-database"), 
+           
+           number_title = "Notes",
+    
+           general = "Authors' construction from the literature",
+           
+           general_title = "Source: ")
+  
+  #knitr::kable(caption = "Description of variables")
+```
 
-[^2]: The World Development Indicators (WDI) database of the World Bank is available at <https://databank.worldbank.org/source/world-development-indicators>.
-
-[^3]: Global Financial Development Database of the  World Bank available at <https://www.worldbank.org/en/publication/gfdr/data/global-financial-development-database>.
-
-[^4]: The Worldwide Governance Indicators (WGI), of the World Bank, is available at <https://databank.worldbank.org/source/worldwide-governance-indicators>.
 
 
 ### Estimation of Efficiency Scores
@@ -1285,9 +1050,7 @@ We now turn to the breadth of outreach measured by the gross loan portfolio adva
 
 ### The DEA model
 
-In this section, we first run the DEA model to generate the three efficiency scores: financial efficiency, social efficiency and socio-financial efficiency. We the summarise the efficiency scores, which are the dependent variables in the regression models together with the independent variables.
-
-- We mean normalize the data.
+In this section, we first run the DEA model to generate the three efficiency scores: financial efficiency, social efficiency and socio-financial efficiency. To run the DEA models, we first eliminate zeros and negative numbers from the inpt and output variables. Next, we mean normalize the data following []. We the summarise the efficiency scores, which are the dependent variables in the regression models together with the independent variables.
 
 As noted earlier, we use the DEA model to generate three efficiency scores. In all cases, the inputs are (). For financial efficiency, the output is OSS. For social efficiency, the outputs are the percentage of female borrowers, average loan balance per borrower, and gross loans to total assets. The outputs for socio-financial efficiency are OSS, percentage of female borrowers, average loan balance per borrower, and gross loans to total assets.
 
