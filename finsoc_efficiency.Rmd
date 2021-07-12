@@ -350,14 +350,14 @@ dea_operating_exp = operating_expense_assets + 1,
 
 dea_percent_women = percent_of_female_borrowers + 1,
 
-dea_average_loan = average_loan_balance_per_borrower + 1,
+dea_average_loan = (1 / (average_loan_balance_per_borrower + 1)),
 
 dea_oss = operational_self_sufficiency + 2) %>% 
   
 ## Normalize the data for DEA analysis 
 mutate(
   
-  dea_liab_equity = dea_liab_equity / mean(dea_liab_equity),
+dea_liab_equity = dea_liab_equity / mean(dea_liab_equity),
 
 dea_operating_exp = dea_operating_exp / mean(dea_operating_exp),
 
