@@ -394,7 +394,12 @@ dea_oss = dea_oss / mean(dea_oss)) %>%
 bind_cols(fineff) %>% 
 
 ## Bind the financial efficiency scores   
-bind_cols(soceff)
+bind_cols(soceff) %>% 
+  
+## Transform both financial and social efficiency for reressions
+mutate(fineff = log(fineff/(1-fineff))) %>% 
+  
+mutate(soceff = log(soceff/(1-soceff)))
 
 ####################################################################
 ## Write a csv for the data
@@ -455,9 +460,10 @@ modelling2 <- function(data, depvar,
   
   ## Run the Model
   unadjusted <- plm(depvar ~ currentlegalstatus + 
-            age + legal_tradition + kkm +
-+           asset_structure + pcrdbgdp + stmktcap +
-            profit_margin + year, 
+            age + kkm + asset_structure + 
+            pcrdbgdp + stmktcap +
+            profit_margin+ 
+            log(assets) + factor(year), 
           data = data, effect = effect,
           model = model,inst.method = inst.method, 
           index = index, 
@@ -481,21 +487,19 @@ hausmann_test2 <- function(data, depvar){
   library(lmtest)
   library(broom)
   
-  fixed <- plm(depvar ~ currentlegalstatus + age + region +
-+           operating_expense_assets + 
-+           donations_assets_ratio + 
-+           capital_asset_ratio +
-+           asset_structure + log(assets) + 
-+           education + profit_margin, 
+  fixed <- plm(depvar ~ currentlegalstatus + 
+            age + kkm + asset_structure + 
+            pcrdbgdp + stmktcap +
+            profit_margin+ 
+            log(assets), 
                data = data, effect = "individual", model = "within", 
       index = c("mfiid", "year")) 
   
-  random <- plm(depvar ~ currentlegalstatus + age + region +
-+           operating_expense_assets + 
-+           donations_assets_ratio + 
-+           capital_asset_ratio +
-+           asset_structure + log(assets) + 
-+           education + profit_margin, 
+  random <- plm(depvar ~ currentlegalstatus + 
+            age + kkm + asset_structure + 
+            pcrdbgdp + stmktcap +
+            profit_margin+ 
+            log(assets), 
           data = data, effect = "individual", model = "random", 
       index = c("mfiid", "year"))
  
@@ -836,7 +840,7 @@ The study adopts a quantitative approach with the model specified next.
 
 ### The Empirical Model
 
-We primarily use the random-effects model regression as per the result of the Hausman test (see Appendix 2 and 3). For robustness checks, however, we also run fixed effects and the pooled OLS. Specifically, we estimate the following model.
+We primarily use the fixed and random-effects model regression as per the result of the Hausman test (see Appendix 2 and 3). Specifically, we estimate the following model.
 
 
  		
@@ -968,9 +972,6 @@ Figure 1 shows the bean plot (Kampstra, 2008) of the operational self-sufficienc
 
 Cooperatives, NGOs and NBFIs, in that order, exhibit the highest disparities in the level of OSS going by the tails of the plots. For instance, cooperatives have the highest and the lowest MFIs in OSS, followed by other legal types. Overall, there is not a marked difference in the median OSS among the legal types of MFIs. The observation is peculiar. Suppose the proposition by the welfare school was correct. In that case, we expect a significant difference in financial performance between NGOs and other legal types, and not the present picture where NGOs lie second in terms of median OSS. The visualisation of the data supports the win-win school view. MFIs can successfully pursue both financial and social goals without many trade-offs, as the discussion on the social performance of MFIs that follows shows.
 
-\newpage
-
-\blandscape
 
 ```{r}
 my_data %>% 
@@ -994,18 +995,16 @@ my_data %>%
                       
                       "Gross Loan Portfolio to Total Assets", "Operational Self-Sufficiency")) %>% 
   
-knitr::kable(caption = "Summary Statistics: DEA Model Input and Output Variables", 
+kableExtra::kbl(caption = "Summary Statistics: DEA Model Input and Output Variables", 
              
              booktabs = TRUE) %>% 
   
-  kable_styling(full_width = TRUE, font_size = 8) %>% 
-  
-  landscape()
+  kable_classic(full_width = FALSE, font_size = 10)
 ```
-
+\blandscape
 \newpage
 
-```{r}
+```{r, fig.cap="Correlation Matrix for DEA Inputs and Outputs", fig.width = 12, fig.height=8}
 my_data %>% 
   
   GGally::ggpairs(columns = c("liabilities_and_equity", "operating_expense_assets", "percent_of_female_borrowers", "average_loan_balance_per_borrower",
@@ -1117,7 +1116,6 @@ We examine the extent to which MFIs reach the financially excluded sustainably. 
 
 Table ()  below shows a summary of the efficiency scores. The results show  that the financial efficiency scores are heavily skewed to the right. Figure () visualizes the financial efficiency scores confirming the extent of the skewness. The results show that most MFIs are barely sustainable financially in spite of the paradigm shift towards commercialization. This observation begs the question; do commercially oriented legal forms of MFIs perform better than NGOs? Further, do newer MFIs that took root when donors put emphasis on the financial sustainability of MFIs do better financially than older MFIs? Panel C shows that only cooperatives and rural banks have higher median financial efficiency scores than NGOs. These results imply that it is possible for NGOs to combine the welfare model of reaching the financially excluded with financial sustainability. However, panel D shows that newer MFIs have higher financial sustainability scores relative to older MFIs. These results could mean that newer MFIs focus more on financial sustainability at the expense of financial exclusion or are better at balancing financial sustainability with social goals. 
 
-\blandscape
 
 ```{r}
 ## Summarise all efficiency scores here
@@ -1143,14 +1141,17 @@ my_data %>%
          
          Q3 = numeric.p75, Max = numeric.p100) %>% 
   
-  kableExtra::kbl() %>% 
+  kableExtra::kbl(booktabs = TRUE, 
+                  
+                  caption = "Summary Statistics for Efficiency Scores") %>% 
   
-  kable_classic()
+  kable_classic(full_width = FALSE, font_size = 10)
 ```
 
+\blandscape
 \newpage
 
-```{r}
+```{r, fig.cap="Financial Efficiency Scores for MFIs in Africa", fig.width = 12, fig.height=8}
 (
 ## Plot financial efficiency scores by legal status
 my_data %>% 
@@ -1214,9 +1215,11 @@ It is also possible that donations and subsidies play a significant role in uppi
 
 ### Social Efficiency
 
-```{r}
+\blandscape
+
+```{r, fig.cap="Social Efficiency Scores for MFIs in Africa", fig.width = 12, fig.height=8}
 (
-## Plot financial efficiency scores by legal status
+## Plot Social efficiency scores by legal status
 my_data %>% 
   
   ggplot(mapping = aes(x = soceff.theta_hat, 
@@ -1260,14 +1263,12 @@ plotter(my_data, x = age, y = soceff.theta_hat, z = age,
 )
 ```
 
-
+\elandscape
 
 
 #### The Independent Variables
 
-\newpage
 
-\blandscape
 
 ```{r}
 my_data %>% 
@@ -1298,15 +1299,13 @@ my_data %>%
                       
                       "Asset Structure", "KKM", "Education")) %>% 
   
-  knitr::kable(caption = "Summary Statistics: Independent Variables for Regression Model", 
+  kableExtra::kbl(caption = "Summary Statistics: Independent Variables for Regression Model", 
              
              booktabs = TRUE) %>% 
   
-  kable_styling(full_width = TRUE, font_size = 8) %>% 
-  
-  landscape()
+  kable_classic(full_width = FALSE, font_size = 10)
 ```
-\elandscape
+
 
 ## Drivers of the Financial and Social Efficiency of MFIs in Africa
 
@@ -1315,6 +1314,71 @@ This section provides results from the regression models on the drivers of socio
 ### Drivers of Social Efficiency of MFIs
 
 Table 4 (below) shows the regression results. In this section, we focus on social efficiency. Social efficiency has two dimensions, breadth and depth. In computing DEA scores for depth, we used the per cent of female borrowers and average loan balance per borrower. An MFI has deeper outreach if it reaches more women, given that they form the majority of the financially excluded, mainly due to social and cultural conditions in Africa. Researchers use the average loan balance to proxy depth with a lower value associated with deeper outreach. To capture the breadth, we use the gross loans to total assets, which shows the scale of outreach (Beisland et al., 2020). An MFI with a more significant gross loans ratio to assets reaches more people by offering more loans or offering loans of larger values or both. Given that both depth and breadth are desirable, we combine the metrics to capture social efficiency, including breadth.
+
+\blandscape
+
+\newpage
+
+```{r}
+soceff_reg_fx <- modelling2(my_data, my_data$soceff.theta_hat)
+
+soceff_reg_fx3 <- modelling2(data3, data3$soceff.theta_hat)
+
+soceff_reg_fx5 <- modelling2(data5, data5$soceff.theta_hat)
+
+soceff_reg_rn <- modelling2(my_data, my_data$soceff.theta_hat, model = "random")
+
+soceff_reg_rn3 <- modelling2(data3, data3$soceff.theta_hat, model = "random")
+
+soceff_reg_rn5 <- modelling2(data5, data5$soceff.theta_hat, model = "random")
+```
+
+
+```{r}
+inference_m4011 <- coeftest(soceff_reg_fx, vcov = vcovBK(soceff_reg_fx, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4111 <- coeftest(soceff_reg_fx3, vcov = vcovBK(soceff_reg_fx3, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4211 <- coeftest(soceff_reg_fx5 , vcov = vcovBK(soceff_reg_fx5, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4311 <- coeftest(soceff_reg_rn, vcov = vcovBK(soceff_reg_rn, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4411 <- coeftest(soceff_reg_rn3, vcov = vcovBK(soceff_reg_rn3, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4511 <- coeftest(soceff_reg_rn5, vcov = vcovBK(soceff_reg_rn5, method = "arellano", type="HC1", cluster = "group"))
+```
+
+
+
+```{r, results='asis'}
+stargazer(soceff_reg_fx, soceff_reg_fx3, 
+          
+         soceff_reg_fx5, soceff_reg_rn, 
+         
+         soceff_reg_rn3, soceff_reg_rn5,
+         
+         title = "Regression Output for Social Efficiency (Standard Errors in Brackets)", 
+          
+          align = TRUE, font.size = "footnotesize", header = FALSE, 
+         
+         se = list(inference_m4011[,2], inference_m4111[,2], inference_m4211[,2], 
+          
+          inference_m4311[,2], inference_m4411[,2], inference_m4511[,2]),
+         
+          omit = c("year.", "Constant"),
+          
+          add.lines = list(c("Model", "Within", "Within", "Within", 
+                        
+            "Random", "Random", "Random"), 
+            
+            c("Data", "Full", ">=3 Years", ">=5 Years", 
+                                             
+            "Full", ">=3 Years", ">=5 Years")))
+```
+
+\elandscape
+
+\newpage
 
 Social efficiency drivers are legal status, operating expense to assets, capital to assets ratio, and education. All else held constant, NGOs have the highest level of social performance in depth and breadth. NBFIs, commercial banks and rural banks follow, while credit unions trail. The results are consistent with the data visualisations. Credit unions have the set objective of serving subscribed members within a set geographic location or common professional background, and it is not their mission to explicitly target social performance (Mathuva et al., 2017). The contestation here is between NGOs and the other commercial entities, excluding credit unions. Although the gaps in social performance are not wide, the results illustrate that MFIs that exclusively target social performance tend to achieve more socially. Hence the role of the mission of an MFI is central to achieving social objectives, a view that is in line with findings by Berbegal-Mirabent et al. (2019).
 
@@ -1369,7 +1433,7 @@ stargazer(fineff_reg_fx, fineff_reg_fx3,
          
          title = "Regression Output for Financial Efficiency (Standard Errors in Brackets)", 
           
-          align = TRUE, font.size = "tiny", header = FALSE, 
+          align = TRUE, font.size = "footnotesize", header = FALSE, 
          
          se = list(inference_m3011[,2], inference_m3111[,2], inference_m3211[,2], 
           
@@ -1409,4 +1473,31 @@ Given the panel structure of data, there is a possibility of cross-sectional dep
 ## Conclusion
 This study examined the levels and drivers of financial efficiency, social efficiency, and socio-financial efficiency of MFIs in Africa, particularly along MFI legal status lines. NGOs have the highest levels of social efficiency and socio-financial efficiency, whereas cooperatives have the least. In terms of financial efficiency, cooperatives and rural banks perform best while NBFIs trail. Social efficiency and socio-financial efficiency drivers are legal statuses, operating expense to assets ratio, capital to assets ratio, asset structure, and education. For financial efficiency, the drivers are similar to social efficiency, except that education is not a significant driver. Notably, capital structure positively influences both financial and social efficiency outcomes that support the need for MFIs to seek external capital. However, operating expenses positively relate to social performance and negatively relate to financial performance, pointing to mission drift. The legitimacy of transformed MFIs rests with how well they balance the need to access commercial capital and the profit motive that may negatively impact their overarching social mission.
 
+## References
+
+
+::: {#refs}
+:::
+
+
+## Appendices
+
+### Appendix 1: Hausmann Test for the Choice Between Fixed and Random effects
+
+```{r}
+rbind(
+hausmann_test2(my_data, my_data$fineff.theta_hat),
+
+hausmann_test2(my_data, my_data$soceff.theta_hat)
+
+) %>% 
+  
+  set_names(names(.) %>% str_to_sentence()) %>% 
+  
+  kableExtra::kbl(caption = "Results of the Hausmann Tests", 
+                  
+                  booktabs = TRUE) %>% 
+  
+  kable_classic()
+```
 
