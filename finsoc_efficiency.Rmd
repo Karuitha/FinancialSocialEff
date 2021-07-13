@@ -10,6 +10,7 @@ header-includes:
 - \usepackage[default]{sourcesanspro}
 - \usepackage[T1]{fontenc}
 - \usepackage{amsmath}
+- \usepackage{dcolumn}
 mainfont: garamond
 output:
   pdf_document:
@@ -154,6 +155,24 @@ finstr <- read_excel("FinancialStructureDatabase20191018.xlsx", sheet = 4) %>%
   #corrplot(method = "number", type = "lower")
 ```
 
+
+```{r}
+## Efficiency indicators 
+## Financial efficiency
+fineff <- read_csv("my_dea.csv") %>% 
+  
+  select(-X1, -starts_with(c("soc_eff", "finsoc")))
+
+## Social efficiency
+soceff <- read.csv("soc_eff.csv") %>% 
+  
+  select(-X) %>% 
+  
+  set_names(c("soceff.theta_hat", "soceff.theta_ci_low", "soceff.theta_ci_high"))
+
+```
+
+
 ```{r}
 ## Read in the dataset 
 my_data <- read_csv("amelia.csv") %>% 
@@ -257,7 +276,9 @@ mutate(currentlegalstatus = factor(currentlegalstatus,
          
 average_loan_balance_per_borrower = replace_na(average_loan_balance_per_borrower, median(average_loan_balance_per_borrower, na.rm = TRUE)),
     
-liabilities_and_equity = replace_na(liabilities_and_equity, median(liabilities_and_equity, na.rm = TRUE)  
+liabilities_and_equity = replace_na(liabilities_and_equity, median(liabilities_and_equity, na.rm = TRUE)), 
+                                    
+gross_loan_portfolio_to_total_assets = replace_na(gross_loan_portfolio_to_total_assets, median(gross_loan_portfolio_to_total_assets, na.rm = TRUE)
          
          )) %>% 
   
@@ -307,7 +328,9 @@ average_loan_balance_per_borrower = replace_na(average_loan_balance_per_borrower
          
          deposits_to_total_assets = replace_na(deposits_to_total_assets, median(deposits_to_total_assets, na.rm = TRUE)), 
          
-liabilities_and_equity = replace_na(liabilities_and_equity, median(deposits_to_total_assets, na.rm = TRUE))
+liabilities_and_equity = replace_na(liabilities_and_equity, median(deposits_to_total_assets, na.rm = TRUE)), 
+
+gross_loan_portfolio_to_total_assets = replace_na(gross_loan_portfolio_to_total_assets, median(gross_loan_portfolio_to_total_assets, na.rm = TRUE))
          
          ) %>% 
   
@@ -365,10 +388,17 @@ dea_percent_women = dea_percent_women / mean(dea_percent_women),
 
 dea_average_loan = dea_average_loan / mean(dea_average_loan),
 
-dea_oss = dea_oss / mean(dea_oss))
+dea_oss = dea_oss / mean(dea_oss)) %>% 
+  
+## Bind the financial efficiency scores 
+bind_cols(fineff) %>% 
 
+## Bind the financial efficiency scores   
+bind_cols(soceff)
+
+####################################################################
 ## Write a csv for the data
-my_data %>% write.csv(., "data.csv")
+write.csv(my_data, "data.csv")
 
 ## Visualize missing data
 #md.pattern(data)
@@ -391,6 +421,7 @@ data5 <- my_data %>%
   filter(n() > 5)  
   
 data5 %>% write.csv(., "data5.csv")
+
 ```
 
 
@@ -399,7 +430,7 @@ data5 %>% write.csv(., "data5.csv")
 ```{r}
 ### Important functions ----
 ## Regression function - fixed, random and pooling
-modelling <- function(data, depvar,
+modelling2 <- function(data, depvar,
                       effect = c("individual", "twoways", "time", "nested"),
                       model = c("within", "random", "ht", "between", "pooling", "fd"),
                       inst.method = c("bvk", "baltagi", "am", "bms"),
@@ -440,7 +471,7 @@ unadjusted
 
 ```{r}
 ## Hausmann Test function
-hausmann_test <- function(data, depvar){
+hausmann_test2 <- function(data, depvar){
   
   library(plm)
   library(broom)
@@ -939,6 +970,8 @@ Cooperatives, NGOs and NBFIs, in that order, exhibit the highest disparities in 
 
 \newpage
 
+\blandscape
+
 ```{r}
 my_data %>% 
   
@@ -971,23 +1004,18 @@ knitr::kable(caption = "Summary Statistics: DEA Model Input and Output Variables
 ```
 
 \newpage
-\blandscape
+
 ```{r}
 my_data %>% 
   
-  select(liabilities_and_equity, operating_expense_assets, 
-         percent_of_female_borrowers, average_loan_balance_per_borrower,
-         gross_loan_portfolio_to_total_assets, gross_loan_portfolio_to_total_assets,
-         operational_self_sufficiency) %>% 
-  
-  psych::pairs.panels(stars = TRUE, pch = ".")
+  GGally::ggpairs(columns = c("liabilities_and_equity", "operating_expense_assets", "percent_of_female_borrowers", "average_loan_balance_per_borrower",
+         "gross_loan_portfolio_to_total_assets",
+         "operational_self_sufficiency"), aes(colour = currentlegalstatus), alpha = 0.5) 
 ```
-\elandscape
+
 
 \newpage
 
-
-\blandscape
 
 ```{r, fig.cap="Financial Sustainability and Social Performance Metrics for MFIs in Africa", fig.width = 12, fig.height=8}
 (plotter(my_data, x = currentlegalstatus, 
@@ -1033,6 +1061,8 @@ plot_annotation(title = "OSS, Female Borrowers, Average Loans, and Gross Loans o
 
 \elandscape
 
+\newpage
+
 
 #### The Social Performance of MFIs in Africa
 The proportion of female borrowers is one of the critical metrics that researchers use to proxy social performance. NGOs have the highest median proportions of female borrowers, followed by NBFIs (Figure 2). The shape of the violins displays the distribution, in this case, among women borrowers. The proportion of female borrowers' skews towards unity for NGOs relative to other legal types and the funnel shape.
@@ -1056,21 +1086,21 @@ As noted earlier, we use the DEA model to generate three efficiency scores. In a
 
 Table 2 shows the summary statistics and correlation matrices for the inputs and outputs of the DEA model. However, these data cannot be applied to DEA as they are. We add a significantly large number to each variable with zeros or negatives to eliminate zeros and negatives. More specifically, we add three (3) to each variable (Ataullah and Le, 2006) to eliminate zeros. In line with Avkiran (2006), we take logarithms of the data. We then run the DEA model using the transformed variables. In the next section, we describe the levels of efficiency observed among MFIs in Africa and then discuss the regression model results on the drivers of the efficiency of MFIs in Africa.
 
-```{r, cache = TRUE}
+```{r, cache = TRUE, eval=FALSE}
 fineff <- envelope(my_data[, c("dea_liab_equity", "dea_operating_exp")], 
          
          my_data[, "dea_oss"])
 ```
 
 
-```{r, cache = TRUE}
+```{r, cache = TRUE, eval=FALSE}
 soc_eff <- envelope(my_data[, c("dea_liab_equity", "dea_operating_exp")], 
          
          my_data[, c("dea_percent_women", "dea_average_loan")])
 ```
 
 
-```{r, cache = TRUE}
+```{r, cache = TRUE, eval=FALSE}
 finsoc_eff <- envelope(my_data[, c("dea_liab_equity", "dea_operating_exp")], 
          
          my_data[,c("dea_percent_women", "dea_average_loan", "dea_oss")])
@@ -1080,7 +1110,95 @@ finsoc_eff <- envelope(my_data[, c("dea_liab_equity", "dea_operating_exp")],
 
 ## DEA Efficiency Scores
 
-We compute the DEA efficiency scores using bootstraps as proposed by Fethi and Pasiouras (2010). Table 3 shows a summary statistics of the efficiency scores for MFIs in Africa. Given that the model is output-oriented, the interpretation is as follows: given a set of inputs, to what extent are MFIs able to maximise output? Given the nature of MFIs as hybrid enterprises, the maximisation of outputs is more relevant for this study. We examine the extent to which MFIs reach the financially excluded sustainably. The first row measures financial efficiency with OSS as the output. The second row represents the social efficiency scores whose outputs are average loan balance and per cent of women borrowers. The third row also measures social efficiency and incorporates the breadth of outreach measured via gross loans to total assets. Row four measures socio-financial efficiency captured using operational self-sufficiency, average loan balance per borrower, and per cent of female borrowers. The last row measures socio-financial efficiency while also including breadth of outreach, gross loans, to total assets.
+We compute the DEA efficiency scores using bootstraps as proposed by Fethi and Pasiouras (2010). Table 3 shows a summary statistics of the efficiency scores for MFIs in Africa. Given that the model is output-oriented, the interpretation is as follows: given a set of inputs, to what extent are MFIs able to maximise output? Given the nature of MFIs as hybrid enterprises, the maximisation of outputs is more relevant for this study. 
+
+### Financial Efficiency Scores
+We examine the extent to which MFIs reach the financially excluded sustainably. The first row measures financial efficiency with OSS as the output. The second row represents the social efficiency scores whose outputs are average loan balance and per cent of women borrowers. The third row also measures social efficiency and incorporates the breadth of outreach measured via gross loans to total assets. Row four measures socio-financial efficiency captured using operational self-sufficiency, average loan balance per borrower, and per cent of female borrowers. The last row measures socio-financial efficiency while also including breadth of outreach, gross loans, to total assets.
+
+Table ()  below shows a summary of the efficiency scores. The results show  that the financial efficiency scores are heavily skewed to the right. Figure () visualizes the financial efficiency scores confirming the extent of the skewness. The results show that most MFIs are barely sustainable financially in spite of the paradigm shift towards commercialization. This observation begs the question; do commercially oriented legal forms of MFIs perform better than NGOs? Further, do newer MFIs that took root when donors put emphasis on the financial sustainability of MFIs do better financially than older MFIs? Panel C shows that only cooperatives and rural banks have higher median financial efficiency scores than NGOs. These results imply that it is possible for NGOs to combine the welfare model of reaching the financially excluded with financial sustainability. However, panel D shows that newer MFIs have higher financial sustainability scores relative to older MFIs. These results could mean that newer MFIs focus more on financial sustainability at the expense of financial exclusion or are better at balancing financial sustainability with social goals. 
+
+\blandscape
+
+```{r}
+## Summarise all efficiency scores here
+my_data %>% 
+  
+  skim_without_charts(fineff.theta_hat, soceff.theta_hat) %>% 
+  
+  select(-skim_type, -n_missing, -complete_rate) %>% 
+  
+  mutate(skim_variable = case_when(
+    
+    skim_variable == "fineff.theta_hat" ~ "financial Efficiency",
+    
+    skim_variable == "soceff.theta_hat" ~ "Social Efficiency",
+    
+    TRUE ~ skim_variable
+    
+  )) %>% 
+  
+  rename(Variable = skim_variable, Mean = numeric.mean, SD = numeric.sd,
+         
+         Min = numeric.p0, Q1 = numeric.p25, Median = numeric.p50,
+         
+         Q3 = numeric.p75, Max = numeric.p100) %>% 
+  
+  kableExtra::kbl() %>% 
+  
+  kable_classic()
+```
+
+\newpage
+
+```{r}
+(
+## Plot financial efficiency scores by legal status
+my_data %>% 
+  
+  ggplot(mapping = aes(x = fineff.theta_hat, 
+                       
+        fill = currentlegalstatus, col = currentlegalstatus)) + 
+  
+  geom_density(alpha = 0.5) + theme(legend.position = "bottom", legend.title = element_blank()) +
+  
+  labs(x = "Financial Efficiency Scores", y = "Density", 
+       
+       title = "A: Financial Efficiency Scores by MFI legal status")
+  +
+
+## Plot financial efficiency scores by age 
+my_data %>% 
+  
+  ggplot(mapping = aes(x = fineff.theta_hat, 
+                       
+        fill = age, col = age)) + 
+  
+  geom_density(alpha = 0.5) + theme(legend.position = "bottom", legend.title = element_blank()) +
+  
+  labs(x = "Financial Efficiency Scores", y = "Density", 
+       
+       title = "B: Financial Efficiency Scores by MFI Age")
+) /
+
+(## Plot median financial efficiency scores by MFI legal status
+plotter(my_data, x = currentlegalstatus, y = fineff.theta_hat, z = currentlegalstatus, 
+        
+        xlabel = "Current Legal Status", ylabel = "DEA Financial Efficiency Scores", 
+        
+        title = "C: Median DEA Financial Efficiency Scores by MFI Legal Status") +
+
+## Plot median financial efficiency scores by MFI age
+plotter(my_data, x = age, y = fineff.theta_hat, z = age, 
+        
+        xlabel = "Age", ylabel = "DEA Financial Efficiency Scores", 
+        
+        title = "D: Median DEA Financial Efficiency Scores by MFI Age")
+)
+```
+
+\elandscape
+
+\newpage
 
 Overall, financial efficiency appears to have the highest range. Also, the combined social and financial efficiency does not improve much from the social efficiency alone, meaning that financial efficiency does not add much to the overall efficiency. Similarly, the inclusion of the breadth of outreach does not improve the overall efficiency. The correlation coefficients also show that financial and social performance metrics do not have tight coupling.
 
@@ -1094,9 +1212,62 @@ In figure 11, we combine the social and financial metrics with the social metric
 
 It is also possible that donations and subsidies play a significant role in upping the financial performance exhibited by NGOs relative to other legal forms of MFIs. It is worth noting that on an absolute level, MFIs are hardly financially sustainable regardless of their legal form- but NGOs are relatively better off (see Figure 1). Overall, these results are not supportive of the mission drift hypothesis so far. In the next section, we detail the regression output from the drivers of the efficiency of MFIs in Africa.
 
+### Social Efficiency
+
+```{r}
+(
+## Plot financial efficiency scores by legal status
+my_data %>% 
+  
+  ggplot(mapping = aes(x = soceff.theta_hat, 
+                       
+        fill = currentlegalstatus, col = currentlegalstatus)) + 
+  
+  geom_density(alpha = 0.5) + theme(legend.position = "bottom", legend.title = element_blank()) +
+  
+  labs(x = "Social Efficiency Scores", y = "Density", 
+       
+       title = "A: Social Efficiency Scores by MFI legal status")
+  +
+
+## Plot financial efficiency scores by age 
+my_data %>% 
+  
+  ggplot(mapping = aes(x = soceff.theta_hat, 
+                       
+        fill = age, col = age)) + 
+  
+  geom_density(alpha = 0.5) + theme(legend.position = "bottom", legend.title = element_blank()) +
+  
+  labs(x = "Social Efficiency Scores", y = "Density", 
+       
+       title = "B: Social Efficiency Scores by MFI Age")
+) /
+
+(## Plot median financial efficiency scores by MFI legal status
+plotter(my_data, x = currentlegalstatus, y = soceff.theta_hat, z = currentlegalstatus, 
+        
+        xlabel = "Current Legal Status", ylabel = "DEA Social Efficiency Scores", 
+        
+        title = "C: Median DEA Social Efficiency Scores by MFI Legal Status") +
+
+## Plot median financial efficiency scores by MFI age
+plotter(my_data, x = age, y = soceff.theta_hat, z = age, 
+        
+        xlabel = "Age", ylabel = "DEA Social Efficiency Scores", 
+        
+        title = "D: Median DEA Social Efficiency Scores by MFI Age")
+)
+```
+
+
+
+
 #### The Independent Variables
 
 \newpage
+
+\blandscape
 
 ```{r}
 my_data %>% 
@@ -1135,7 +1306,7 @@ my_data %>%
   
   landscape()
 ```
-
+\elandscape
 
 ## Drivers of the Financial and Social Efficiency of MFIs in Africa
 
@@ -1155,6 +1326,70 @@ Financial literacy could be the key. However, the objective of MFIs is not to se
 ### Financial Efficiency of MFIs
 
 The financial efficiency of MFIs shows some markedly different pattern from social performance and the socio-financial performance of MFIs. First, unlike social performance, where the efficiency score has a median of 0.92 on a scale of zero to one, financial efficiency is relatively low with a median of 0.41. Thus, most MFIs emphasise social performance or struggle to balance social and financial performance (Mersland and Strøm, 2010).
+
+\newpage
+
+```{r}
+fineff_reg_fx <- modelling2(my_data, my_data$fineff.theta_hat)
+
+fineff_reg_fx3 <- modelling2(data3, data3$fineff.theta_hat)
+
+fineff_reg_fx5 <- modelling2(data5, data5$fineff.theta_hat)
+
+fineff_reg_rn <- modelling2(my_data, my_data$fineff.theta_hat, model = "random")
+
+fineff_reg_rn3 <- modelling2(data3, data3$fineff.theta_hat, model = "random")
+
+fineff_reg_rn5 <- modelling2(data5, data5$fineff.theta_hat, model = "random")
+```
+
+
+```{r}
+inference_m3011 <- coeftest(fineff_reg_fx, vcov = vcovBK(fineff_reg_fx, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m3111 <- coeftest(fineff_reg_fx3, vcov = vcovBK(fineff_reg_fx3, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m3211 <- coeftest(fineff_reg_fx5 , vcov = vcovBK(fineff_reg_fx5, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m3311 <- coeftest(fineff_reg_rn, vcov = vcovBK(fineff_reg_rn, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m3411 <- coeftest(fineff_reg_rn3, vcov = vcovBK(fineff_reg_rn3, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m3511 <- coeftest(fineff_reg_rn5, vcov = vcovBK(fineff_reg_rn5, method = "arellano", type="HC1", cluster = "group"))
+```
+
+\blandscape
+
+```{r, results='asis'}
+stargazer(fineff_reg_fx, fineff_reg_fx3, 
+          
+         fineff_reg_fx5, fineff_reg_rn, 
+         
+         fineff_reg_rn3, fineff_reg_rn5,
+         
+         title = "Regression Output for Financial Efficiency (Standard Errors in Brackets)", 
+          
+          align = TRUE, font.size = "tiny", header = FALSE, 
+         
+         se = list(inference_m3011[,2], inference_m3111[,2], inference_m3211[,2], 
+          
+          inference_m3311[,2], inference_m3411[,2], inference_m3511[,2]),
+         
+          omit = c("year.", "Constant"),
+          
+          add.lines = list(c("Model", "Within", "Within", "Within", 
+                        
+            "Random", "Random", "Random"), 
+            
+            c("Data", "Full", ">=3 Years", ">=5 Years", 
+                                             
+            "Full", ">=3 Years", ">=5 Years")))
+```
+
+\elandscape
+
+
+\newpage
 
 As in prior results, the debt-equity mix and donations do not affect financial performance significantly. The significant drivers of financial efficiency are operating expenses to assets ratio, capital to assets ratio, and asset structure. Operating expenses relate negatively to financial efficiency, which is not unexpected as expenses drive down profitability. The inverse operating expense- financial efficiency relationship is the reverse of the positive link between social performance and operating expenses. The relation suggests that mission drift is likely. However, as previous literature shows, the extent of mission drift also depends on internal governance mechanisms (Campion and White, 1999, Abeysekera et al., 2014).
 
