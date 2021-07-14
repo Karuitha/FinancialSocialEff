@@ -16,6 +16,7 @@ output:
   pdf_document:
     toc: yes
     toc_depth: 4
+    number_sections: true
   html_document:
     css: my_doc_css.css
   prettydoc::html_pretty:
@@ -394,12 +395,12 @@ dea_oss = dea_oss / mean(dea_oss)) %>%
 bind_cols(fineff) %>% 
 
 ## Bind the financial efficiency scores   
-bind_cols(soceff) %>% 
+bind_cols(soceff) 
   
 ## Transform both financial and social efficiency for reressions
-mutate(fineff = log(fineff/(1-fineff))) %>% 
+#mutate(fineff = log(fineff/(1-fineff))) %>% 
   
-mutate(soceff = log(soceff/(1-soceff)))
+#mutate(soceff = log(soceff/(1-soceff)))
 
 ####################################################################
 ## Write a csv for the data
@@ -756,7 +757,7 @@ envelope <- function(input, output){
 
 \newpage
 
-## **Abstract** {#centermydoc}
+> **Abstract** {#centermydoc}
 
 >We examine the drivers as well as levels of financial efficiency, social efficiency, and joint socio-financial efficiency of microfinance institutions (MFIs) in Africa for the period 2000-2019. Broadly, our results show a decline in social performance over time but no discernible trend in financial performance. The legal status of an MFI mainly drives its social and socio-financial performance. Specifically, operating efficiency, capital adequacy, asset structure, and education are significant drivers of our target efficiencies. More specifically, operating costs relate negatively to financial efficiency and relate positively to social efficiency and socio-financial efficiency. Capital adequacy relates positively to financial, social and socio-financial efficiencies, whereas asset structure relates negatively to these three efficiency variables. Education relates negatively to financial efficiency but negatively to social and socio-financial efficiencies. These results suggest that while access to commercial capital enhances the overall efficiency, the quest for profitability (and financial efficiency by extension) diminishes social efficiency. Importantly, our analysis shows a trade-off between financial efficiency on the one hand and social efficiency and social-financial efficiency on the other. Our results remain robust after excluding outliers in the analysis. ^[1. Graduate School of Business Administration, University of the Witwatersrand, 2nd St Davids Place, Parktown, Johannesburg, South Africa, 2050]. ^[Karatina University, School of Business, P.O. Box 1957-10101, Karatina, Kenya]
 
@@ -767,7 +768,7 @@ envelope <- function(input, output){
 \vspace{5mm}
 **JEL Classification**: G210, G230
 
-## Introduction
+# Introduction
 
 This work examines the drivers and levels of microfinance institutions' financial and social efficiencies (MFIs) in Africa, considering the transformation of MFIs from not-for-profit ventures to commercial entities. Specifically, the research examines the drivers of social efficiencies on the one hand. It critically examines the drivers of the joint financial and social efficiency (socio-financial efficiency) of MFIs in Africa on the other hand. MFIs have a dual mission. First, they derive legitimacy by availing financial services to the poor and other often financially excluded members of society [@marconatto2016going]. To achieve this social goal, MFIs have in the past primarily relied on private donations and government subsidies [@d2017ngos]. However, with the rise of neo-liberalism [@bateman2010doesn], donors and stakeholders increasingly presume that MFIs should be financially self-sustaining, which is the second goal of MFIs [@beisland2019commercialization]. Besides, political and economic uncertainties surrounding donations and subsidies reinforce the need for MFIs to be financially independent [@armendariz2011mission; @garmaise2013cheap].
 
@@ -789,7 +790,7 @@ We take all formal MFIs in Africa as the population, with the sampling frame bei
 
 The remainder of the research proceeds as follows. In section 2, we review the empirical literature and lay out the theoretical basis for the financial and social efficiency of MFIs. The following section provides a summary of the results of the study. Part 4 states the hypothesis and describes the empirical methods deployed in the research. In contrast, part 5 focuses on the data used in computing the efficiency scores and that serve as variables in the regression. Next, in section 6, we detail the results and the associated robustness checks, and Section 7 concludes.
 
-## Theory and Empirical Literature
+# Theory and Empirical Literature
 
 In Microfinance Schism, Morduch (2000) urges caution about the win-win view of microfinance. The win-win view posits that MFIs can simultaneously pursue and achieve financial sustainability and social goals without trade-offs. This perspective seeks to reconcile the welfare approach that views financial sustainability and social performance to be incompatible and the financial sustainability perspective, which, while recognising the need for meeting social goals, emphasises financial sustainability. Morduch calls for the accommodation of multiple, hybrid MFI models as being on the continuum that includes those that seek profits while serving the poor and those that strictly focus on social goals like NGOs that are reliant on donations and subsidies. The broad array of microfinance programs, Morduch (2000) argued, would then serve diverse populations and contexts instead of prioritising or rating some MF models over others (Marconatto et al., 2016).
 
@@ -810,7 +811,7 @@ Further, some scholars argue that mission drift is often confused with progressi
 
 Lastly, a closely related study by Lam et al. (2020) finds that MFIs exhibit no evidence of mission drift. Instead, they find that financial performance is positively associated with subsequent social performance in for-profit MFIs relative to not-for-profit MFIs. Moreover, in contrast, the social performance of not-for-profit MFIs varies positively with subsequent financial performance compared to for-profit MFIs. Therefore, these authors surmise that for-profit MFIs are more efficient at translating financial performance to social goals while nonprofits are better at translating social objectives to financial goals. For nonprofits, part of the reason could be the goodwill generated by meeting social goals, which leads to more support from donors, the state, and other stakeholders. MFIs that are profit-based, however, must first generate profit to enable them to address social goals.
 
-## Hypotheses
+# Hypotheses
 While the highlighted studies examine aspects of efficiency separately, this study goes further by looking into the collective socio-financial and social performance. Hence, in addition to examining the drivers of financial and social efficiencies of MFIs, we hypothesise as follows.
 
 - Hypothesis 1: MFIs that follow the commercial model exhibit better financial performance than MFIs that follow the NGO model.
@@ -819,26 +820,26 @@ While the highlighted studies examine aspects of efficiency separately, this stu
 
 In these hypotheses, we note that most NGOs are also shifting to the commercial model but continue to rely substantially on donor funds, government subsidies and guarantees that allow access to low-cost commercial funds (D’Espallier et al., 2013). Further, the mission of NGO MFIs may defer markedly from that of commercial MFIs, meaning that even when pursuing profits, they are less likely to abandon the social goals (Louis et al., 2013). The section that follows summarises the results of the study.
 
-## Summary of Results from Data Analysis
+# Summary of Results from Data Analysis
 
 This section highlights the results of the data analysis on the levels and drivers of social efficiency, financial efficiency, and combined socio-financial efficiency of MFIs in Africa. The section also elucidates our hypothesised relations vis-a-vis MFI types. The inputs for the DEA analysis constitute measures for financial performance and social performance. We capture financial performance using operational self-sufficiency (OSS). For social performance, we use three metrics. To measure the depth of outreach, we use the per cent of women borrowers and the average loan balance per borrower. These metrics capture the ability of MFIs to reach the most financially excluded people such as women, rural dwellers, and other people that require and would typically make do with small loans sizes. The gross loan portfolio to assets measures the breadth of outreach – the relative number of people the MFI can reach. The discussion captures the individual inputs and overall DEA score that researchers have documented in the literature.
 
-### Social Efficiency
+## Social Efficiency
 
 MFIs exhibit a high level of social efficiency, consistent with their mission of providing financial services to the financially excluded, mostly the poor. On a scale of zero to one, the mean and median DEA social efficiency score is about 0.92, with substantial variation across legal forms of MFIs. NGO-based MFIs top with a median social efficiency score of 0.96, followed by NBFIs, commercial banks, rural banks, and cooperatives with median scores of 0.92, 0.91, 0.90, and 0.89, respectively. These results show that legal status, and by extension, the profit orientation, matters in the social performance of MFIs. However, capital structure- the debt-equity mix and the level of donations, are not significant drivers of social efficiency. The ratio of operating expense to total assets relates negatively to social efficiency.
 Given that operating expense is a significant driver of profitability, these results point to a potential conflict between financial performance and social performance. Capital to total assets ratio relates positively with social performance while asset structure exhibits a negative relationship. Lastly, education relates positively to the social efficiency of MFIs. This outcome suggests the plausibility that awareness could allow poor and financially excluded people to productively engage with the providers of financial services, such as MFIs.
 
-### Financial efficiency
+## Financial efficiency
 
 MFIs in Africa are barely financially sustainable, with marginal disparities between MFIs legal types. On a scale of zero to one, the mean and median financial efficiency scores are 0.42 and 0.41, respectively. Rural banks have the highest median financial efficiency score (0.419), followed by cooperatives (0.415) and NGOs (0.408), while commercial banks (0.406) and Non- Bank Financial Institutions (NBFIs) (0.402) trail. Again, the capital structure is not a significant driver of financial efficiency. Instead, the drivers of financial efficiency are operating expense to assets ratio, capital to assets ratio, asset structure, and education. Operating expenses, asset structure (the ratio of fixed assets to total assets) and education all vary negatively with financial performance. Operating expenses dominate the expenses items on the income statement. Simultaneously, a higher asset structure means the MFI dedicates a substantial amount of cash to finance non-current assets, which takes time to recoup. Capital to total assets ratio varies positively with financial performance, social performance, and joint socio-financial performance. Education would proxy the customer base, with the more exposed populace less likely to get financial services from MFIs, preferring the mainstream financial system instead. These results are in line with some line of research on the financial sustainability of MFIs across the globe (Bayai and Ikhide, 2016).
 
-### Social and Financial Efficiency
+## Social and Financial Efficiency
 The joint financial and social efficiency scores trend follow those of social efficiency. The mean and median socio-financial efficiency score is 0.92 but varies with the legal type of MFI. NGOs lead with a median efficiency score of 0.959, followed by NBFIs (0.915), Commercial Banks (0.908), Rural Banks (0.897), and Cooperatives/ Credit Unions (0.890). As with social efficiency, capital structure, that is, the debt-equity mix and the level of donations, are not significant drivers of socio-financial efficiency. The ratio of operating expense to assets relates negatively to socio-financial efficiency. Lastly, education relates positively to the social-financial efficiency of MFIs.
 
-## Methodology and Data
+# Methodology and Data
 The study adopts a quantitative approach with the model specified next.
 
-### The Empirical Model
+## The Empirical Model
 
 We primarily use the fixed and random-effects model regression as per the result of the Hausman test (see Appendix 2 and 3). Specifically, we estimate the following model.
 
@@ -848,11 +849,30 @@ We primarily use the fixed and random-effects model regression as per the result
  							          
            
  							                       
-Where $Y_{it}$ represents the dependent variable, which takes efficiency scores derived from the data envelopment analysis (DEA) model. We compute three measure of efficiency that take turns as the dependent variables: social efficiency, financial efficiency, and socio-financial efficiency. In computing DEA, we follow the intermediation approach, where the inputs are net fixed assets, operating expenses to assets ratio, deposits to total assets ratio, liabilities and equity, and donations. The outputs comprise the per cent of female borrowers, average loan balance per borrower, gross loans to total assets ratio, and operational self-sufficiency (OSS). These input and output variables are described in more detail in section 5.1, together with the mechanics of the DEA model in part 5. $X_{it}$ on the other hand, it represents the set of independent variables as described in Table 1 below. 5.2 
+Where $Y_{it}$ represents the dependent variable, which takes efficiency scores derived from the data envelopment analysis (DEA) model. $X_{it}$ on the other hand, represents the set of independent variables as described in Table 1 below. 5.2. We compute three measure of efficiency that take turns as the dependent variables: social efficiency, financial efficiency, and socio-financial efficiency. Section () describes in detail the DEA model. 
 
-### Data, Data Sources and Description of Variables. 
+## Data, Data Sources and Description of Variables. 
 
-We source our data from the Microfinance Information Exchange (MIX) pooled database [^1], the World Development Indicators [^2] and the Global Financial Development Database [^3]. The dataset used in this article consists of 705 MFIs across Africa. While the MIX data is not a comprehensive representation of the microfinance industry in Africa, it does provide general trends in the sector (Jarotschkin, 2013).
+We source our data from the Microfinance Information Exchange (MIX) pooled database [^1], the World Development Indicators [^2], the Global Financial Development Database [^3], and the Worldwide Governance Indicators [^4]. The dataset used in this article consists of 705 MFIs across Africa. While the MIX data is not a comprehensive representation of the microfinance industry in Africa, it does provide general trends in the sector (Jarotschkin, 2013).
+
+## The DEA Model
+
+As noted earlier, the study adopts the Data Envelopment Analysis (DEA) technique to estimate both the financial and social efficiency scores for a given MFI in each period. Charnes et al. (1978) and Charnes et al. (1981) formulated the traditional data envelopment analysis (DEA) by following the ideas of Farrell (1957). Unlike the other measures of financial and social performance of MFIs, DEA quantifies the (inverse) agency costs without confounding factors that are not related to agency costs (Berger and Bonaccorsi di Patti, 2006). A significant advantage of DEA is that it is not prone to the standard econometric problems because it is a deterministic and non-parametric enveloping technique. For instance, in running the DEA model, the researcher does not have to specify a functional form, estimate parameters, or define an error term. Importantly, DEA makes no distinction between dependent and independent variables (Zhou et al., 2007). 
+
+DEA requires the resolution of the following linear programming model.
+
+$\frac{\sum_{r=1}^{n} u_{r}v_{r}}{\sum_{i=1}^{m} v_{i}x_{i}} <= 1$
+
+
+for 
+
+
+$u_{r}, v_{r} >= 0$
+
+
+In this case, $n$ is the output number while $m$ the input number. Also, $u_{r}$ is the weight of n and $v_{i}$ is the weight of m. Hence, $v_{i}$ and $x_{i}$ represent the weight of m and output of $m$, respectively. Similarly, $u_{r}$ and $y_{r}$ represent the weight and amount of input in that order. 
+
+When researchers run DEA assuming constant returns to scale (CRS), the resulting output represents technical efficiency (TE). Technical efficiency stands for the efficiencies due to input-output configurations and size of operations. Under variable returns to scale, the output is the pure technical efficiency (PTE), that is, the efficiency arising from input-output configuration while ignoring the scale of operations (Staub et al., 2010, Ulas and Keskin, 2015). Additionally, input-oriented DEA seeks to minimise inputs for a given level of output, while in the case of output-oriented DEA, the goal is to maximise outputs for a given level of inputs with the choice of the orientations based on the input or output variables that managers have the most control over (Huguenin, 2012).
 
 ### Inputs and Outputs for the DEA Model
 In this section, we first describe the inputs and outputs for the DEA efficiency model. We derive the efficiency scores from the Data Envelopment Analysis (DEA) model, where each of the MFIs is a decision-making unit (DMU) that converts multiple inputs into outputs. The efficiency scores show the relative annual configuration of inputs and outputs per MFI in the sample, as listed below. The output from the DEA forms the dependent variables. After describing the inputs and outputs for the DEA model, we describe the independent variables for the regression analysis.
@@ -883,207 +903,9 @@ Financial Performance outputs
 
 - Operational self-sufficiency (OSS): The OSS captures the extent to which an MFI meets its financial objectives by generating financial returns that can cover all the expenses. MIX defines the OSS as follows;
 
-<equation>
+$OSS = \frac{}{}$
 
-
-#### Independent Variables:
-The independent variables are as follows,
-
-```{r}
-tribble(~ Variable_Description, 
-
-"1. Debt-to-Equity Ratio: The ratio of total liabilities to equity, the amount of leverage supported by each unit of capital contributed by shareholders. The ratio shows how an MFI finances its portfolio of assets beyond equity capital to cushion or absorb losses when total assets fall short of all liabilities. Much of the extant research examines the debt-equity mix and its relationship with the performance of MFIs",
-
-"2. Deposits to Total Assets: The ratio of deposits to assets that aids in determining the extent to which MFIs use deposits to finance assets. NGOs transitioning to the commercial model can mobilise deposits  to fund their operations over and above donations and equity",
-
-"3. Capital to Assets Ratio: The ratio of total equity to total assets and a slightly modified reciprocal debt-to-equity ratio. Hence, it captures the ability to meet obligations and to absorb unexpected losses using capital contributions by the owner (Kimmel, Weygandt, & Kieso, 2018)",
-        
-"4. Current Legal Status: The legal forms of registration of an MFI are as follows; Commercial Bank, Non-Bank Financial Institution (NBFI), Non-Governmental Organization (NGO), Credit Union/ Cooperative, or Rural Bank. The legal status may dictate the profit orientation and sources of capital for the MFIs. The legal status of an MFI may impact the financing structure in several ways. First, legal status or form typically restricts NGOs from taking deposits, which lowers the debt-equity ratio and deposits to assets, raising the capital asset ratio. Also, NGOs may not venture into capital markets for funds, given their mostly not-for-profit orientation. The opposite is the case for MFIs of commercial banks legal form whose legal status allows for deposits.", "", 
-        
-"5.	Age: MIX classifies MFIs into three categories depending on the time that has elapsed since the MFI started operations- new (0-4 years), young (4-8 years) and mature (over eight years). The variable is hence a dummy. Older firms are likely better established, have a solid reputation and hence likely to attract more debt and deposits. The institutional life cycle view of Bayai and Ikhide (2016) captures the correspondence between age and debt.", "", 
-
-"6. Legal Tradition (Legal): The indicator is a dummy variable with common law countries coded 0, civil law countries 1, and 2 otherwise as per the classification by Oto-Peralías and Romero-Ávila (2014). Typically, common law countries have relatively better financial infrastructure that allows firms to access financial markets easily. Hence, MFIs in common law countries may exhibit higher debt and equity ratios in their capital structures than those in common law and other legal traditions. (Schnyder, Gerhard, Mathias Siems, & Ruth V. Aguilera, 2018)", "", 
-
-"7. Size (Log of Total Assets): We proxy the size of MFI with the natural logarithm of total assets, again using MIX data. Assets are supported by the sum of capital and liabilities or, equivalently, the total value of resources owned or controlled by the MFI resulting from past and current activities and from which the MFI derives future benefits. We expect firms with more assets to have a higher debt capacity and more debt-to-equity ratios, and lower capital to equity ratios. Large firms draw their strength from holding diversified investments and hence higher capacity to absorb risk. Besides, they have easy access to debt markets(Kurshev & Strebulaev, 2015). Furthermore, these firms are likely to attract more deposits, given the trust they inspire in depositors and their marketing reach (Kimmel et al., 2018). We hypothesise that donations vary positively with the size of MFI, as large, older firms have established a reputation with donors.", "", 
-
-"7. Governance/ Institutional Quality (KKM): We create the country level KKM index using the first principal component of the WGI available in the World Bank databases. The index captures the institutional quality in corruption control, government effectiveness, political stability, the rule of law, and voice and accountability (Kaufmann, Kraay, & Mastruzzi, 2011). Firms in countries with better governance can quickly raise debt finance due to ease of contract enforcement — the result, a high debt-equity ratio and a low capital asset ratio. Similarly, the level of deposits mobilisation may be higher in better-governed countries arising from consumer confidence in legislation relating to deposits protection (La Porta, Lopez-de-Silanes, & Shleifer, 2013; Allen et al., 2014). Lastly, MFIs in countries with low KKM may have higher donations as donors opt to circumvent corrupt government channels. We use the terms institutional quality and governance interchangeably throughout the text", "", 
-
-"8. Private Credit to GDP: We capture the total amount of credit advanced to the private sector by financial intermediaries as a proxy for capital markets development concerning the banking sector following Ito and Kawai (2018). The data source is the Global Financial Development Database, GFDD, of the World Bank (See note 4). Private credit to GDP represents the financial resources provided to the private sector by domestic money banks as a share of GDP. Domestic money banks comprise commercial banks and other financial institutions that accept transferable deposits, such as demand deposits. The data is available in WDI. Financial sector development is central to the acquisition of both equity and debt financing. We hypothesise a high debt to equity ratio, and deposits to assets ratios in countries with more robust financial sectors as financial institutions tend to be highly leveraged.", "", 
-
-"9. Stock market capitalisation to GDP: We capture the extent of stock market development using the ratio of stock market capitalisation to GDP to proxy how firms can raise equity capital. Although Africa's equity markets are thin, some relatively large stock markets like South Africa, Kenya, and Ghana exist. The data are from the GFDD.", "", 
-
-"11. Education: Education is the ratio of gross secondary school enrolment to gross primary school enrolment that captures the extent of graduation from elementary to secondary education and the overall literacy rate. The data is available in the WDI. We hypothesise a positive relationship between education and debt/equity ratio, implying a lower capital asset ratio. Similarly, education may enhance the capacity of the populace to use financial products like savings, hence a higher deposit to assets ratio.  Also, education may directly or indirectly influence financial sector development, which eases the acquisition of capital in financial markets (Allen et al., 2014).", "", 
-
-"12. Asset Structure (Tangibility): Asset structure is is measured as the ratio of non-current assets to total assets of an MFI (Microfinance Information Exchange (MIX), 2019). The ratio indicates the extent of investment in physical infrastructure, a significant issue in constraining banking for the poor due to the perceived lack of scale economies to warrant the erection, for instance, of brick and mortar branches (Ledgerwood, 1998). MFIs with a more significant physical presence are likely to attract more deposits. Therefore, they also have a higher capacity to borrow and service debt. Further, tangible assets serve as collateral to protect lenders from the moral hazard problem (Jensen & Meckling, 1976), and hence a positive relationship between debt and asset tangibility (Titman & Wessels, 1988; Kyereboah-Coleman, 2007a).", "", 
-
-"13. Profit Margin: The profit margin is the net operating income divided by financial revenue. The ratio represents the ability of MFIs to generate income from the core mandate of offering financial services like lending, savings, insurance, and so on. Profitability may enhance the capacity of an MFI to secure debt, thus leading to a higher debt to equity ratio and low capital to assets ratio. The opposite is the case when an MFI retains earnings and hence raises the level of equity.", "") %>% 
-  
-  kbl(., caption = "Description of Variables", booktabs = TRUE, longtable = TRUE) %>% 
-  
-  kable_paper(full_width = TRUE) %>% 
-  
-  footnote(number = c("MIX Database on www.themix.org and https://datacatalog.worldbank.org/dataset/mix-market", "WDI on https://databank.worldbank.org/source/world-development-indicators.", "WGI/ KKM on https://databank.worldbank.org/source/worldwide-governance-indicators.", "GFDD on https://www.worldbank.org/en/publication/gfdr/data/global-financial-development-database"), 
-           
-           number_title = "Notes",
-    
-           general = "Authors' construction from the literature",
-           
-           general_title = "Source: ")
-  
-  #knitr::kable(caption = "Description of variables")
-```
-
-
-
-### Estimation of Efficiency Scores
-
-This section presents the DEA model alongside a description of the inputs and outputs.
-
-#### The DEA Model
-
-The study adopts the Data Envelopment Analysis (DEA) technique to estimate both the financial and social efficiency scores for a given MFI in each period. Charnes et al. (1978) and Charnes et al. (1981) formulated the traditional data envelopment analysis (DEA) by following the ideas of Farrell (1957). Unlike the other measures of financial and social performance of MFIs, DEA quantifies the (inverse) agency costs without confounding factors that are not related to agency costs (Berger and Bonaccorsi di Patti, 2006). A significant advantage of DEA is that it is not prone to the standard econometric problems because it is a deterministic and non-parametric enveloping technique. For instance, in running the DEA model, the researcher does not have to specify a functional form, estimate parameters, or define an error term. Importantly, DEA makes no distinction between dependent and independent variables (Zhou et al., 2007). 
-
-DEA requires the resolution of the following linear programming model.
-
-
-
-$\frac{\sum_{r=1}^{n} u_{r}v_{r}}{\sum_{i=1}^{m} v_{i}x_{i}} <= 1$
-
-
-for 
-
-
-$u_{r}, v_{r} >= 0$
-
-
-In this case, $n$ is the output number while $m$ the input number. Also, $u_{r}$ is the weight of n and $v_{i}$ is the weight of m. Hence, $v_{i}$ and $x_{i}$ represent the weight of m and output of $m$, respectively. Similarly, $u_{r}$ and $y_{r}$ represent the weight and amount of input in that order. 
-
-When researchers run DEA assuming constant returns to scale (CRS), the resulting output represents technical efficiency (TE). Technical efficiency stands for the efficiencies due to input-output configurations and size of operations. Under variable returns to scale, the output is the pure technical efficiency (PTE), that is, the efficiency arising from input-output configuration while ignoring the scale of operations (Staub et al., 2010, Ulas and Keskin, 2015). Additionally, input-oriented DEA seeks to minimise inputs for a given level of output, while in the case of output-oriented DEA, the goal is to maximise outputs for a given level of inputs with the choice of the orientations based on the input or output variables that managers have the most control over (Huguenin, 2012).
-
-
-## Results
-
-### Exploratory Data Analysis 
-
-We examine the indicators of financial and social performance by MFIs in Africa. Here, we focus on taking the individual measures of performance, the proportion of female borrowers, average loan balance per borrower, gross loans to assets and operational self-sufficiency. While the examination of indicator variables does not explicitly measure efficiency (we do this in a later section using DEA), they illustrate the extent to which MFIs fare in their mission. First, Table 2 (above) presents the descriptive statistics. We visualise the data and describe the scope of both financial and social performance, followed by a discussion of the DEA efficiency scores. Next, we discuss the levels of efficiency by MFIs types based on the DEA scores. Finally, we layout and describe the results of the regression model.
-
-#### The Financial Performance of MFIs in Africa
-Figure 1 shows the bean plot (Kampstra, 2008) of the operational self-sufficiency (OSS) among MFIs in Africa. The results indicate that there are as many MFIs that are financially sustainable as financially sustainable ones. Some are not sustainable, with significant variations across legal types and regions. Based on the median, rural banks and commercial banks exhibit a higher level of operational self-sufficiency, followed by NGOs. Cooperatives and NBFIs have the lowest median OSS in that order.
-
-Cooperatives, NGOs and NBFIs, in that order, exhibit the highest disparities in the level of OSS going by the tails of the plots. For instance, cooperatives have the highest and the lowest MFIs in OSS, followed by other legal types. Overall, there is not a marked difference in the median OSS among the legal types of MFIs. The observation is peculiar. Suppose the proposition by the welfare school was correct. In that case, we expect a significant difference in financial performance between NGOs and other legal types, and not the present picture where NGOs lie second in terms of median OSS. The visualisation of the data supports the win-win school view. MFIs can successfully pursue both financial and social goals without many trade-offs, as the discussion on the social performance of MFIs that follows shows.
-
-
-```{r}
-my_data %>% 
-  
-  select(liabilities_and_equity, operating_expense_assets, 
-         percent_of_female_borrowers, average_loan_balance_per_borrower,
-         gross_loan_portfolio_to_total_assets, gross_loan_portfolio_to_total_assets,
-         operational_self_sufficiency) %>% 
-  
-  skimr::skim_without_charts() %>% 
-  
-  select(-n_missing, -complete_rate, -skim_type) %>%
-  
-  rename(Variable = skim_variable, Mean = numeric.mean, SD = numeric.sd, Min = numeric.p0,
-         
-         Q1 = numeric.p25, Median = numeric.p50, Q3 = numeric.p75, Max = numeric.p100) %>% 
-  
-  mutate(Variable = c("Liabilities and Equity", "Operating Expense to Assets",
-                      
-                      "Percent of Female Borrowers", "Average Loan Balance per Borrower", 
-                      
-                      "Gross Loan Portfolio to Total Assets", "Operational Self-Sufficiency")) %>% 
-  
-kableExtra::kbl(caption = "Summary Statistics: DEA Model Input and Output Variables", 
-             
-             booktabs = TRUE) %>% 
-  
-  kable_classic(full_width = FALSE, font_size = 10)
-```
-\blandscape
-\newpage
-
-```{r, fig.cap="Correlation Matrix for DEA Inputs and Outputs", fig.width = 12, fig.height=8}
-my_data %>% 
-  
-  GGally::ggpairs(columns = c("liabilities_and_equity", "operating_expense_assets", "percent_of_female_borrowers", "average_loan_balance_per_borrower",
-         "gross_loan_portfolio_to_total_assets",
-         "operational_self_sufficiency"), aes(colour = currentlegalstatus), alpha = 0.5) 
-```
-
-
-\newpage
-
-
-```{r, fig.cap="Financial Sustainability and Social Performance Metrics for MFIs in Africa", fig.width = 12, fig.height=8}
-(plotter(my_data, x = currentlegalstatus, 
-        
-        y = operational_self_sufficiency, z = currentlegalstatus, 
-        
-        xlabel = "", ylabel = "OSS", 
-        
-        title = "") +
-
-
-plotter(my_data, x = currentlegalstatus, 
-        
-        y = percent_of_female_borrowers, z = currentlegalstatus, 
-        
-        xlabel = "", ylabel = "% of Female Borrowers", 
-        
-        title = "")) /
-
-
-(plotter(my_data, x = currentlegalstatus, 
-        
-        y = average_loan_balance_per_borrower, z = currentlegalstatus, 
-        
-        xlabel = "", ylabel = "Average Loan Balance", 
-        
-        title = "") +
-
-
-plotter(my_data, x = currentlegalstatus, 
-        
-        y = gross_loan_portfolio_to_total_assets, z = currentlegalstatus, 
-        
-        xlabel = "", ylabel = "Gross Loans to Assets", 
-        
-        title = "")) +
-  
-plot_annotation(title = "OSS, Female Borrowers, Average Loans, and Gross Loans of MFIs in Africa", 
-                
-                theme = theme(plot.title = element_text(size = 12)))
-
-```
-
-\elandscape
-
-\newpage
-
-
-#### The Social Performance of MFIs in Africa
-The proportion of female borrowers is one of the critical metrics that researchers use to proxy social performance. NGOs have the highest median proportions of female borrowers, followed by NBFIs (Figure 2). The shape of the violins displays the distribution, in this case, among women borrowers. The proportion of female borrowers' skews towards unity for NGOs relative to other legal types and the funnel shape.
-
-The finding corroborates the observation that the highest median percentage of female borrowers is in North Africa, which only NGOs represented in the sample (see figure 6). From this perspective, it appears like the concerns of the welfare school are warranted. If mission drift were to occur upon the conversion of NGOs to commercial entities, it would be a hammer blow to financial inclusion to women in this scenario. Commercial banks and Rural banks have roughly equal median proportions of female borrowers. Credit unions have the most negligible proportion of female borrowers, perhaps indicative of their lending to tightly knitted groups of people with common occupations or geographic backgrounds, hence placing less emphasis on social performance. The exception to this observation is are the MFIs that lend almost exclusively to males or females.
-
-Another metric that researchers often use to measure the social impact of MFIs is the average loan balance per borrower. In this case, the lower the balance, the more the MFI reaches the poorest and the financially excluded, who often borrow tiny amounts to carry out their informal businesses or settle bills (Demirguc-Kunt et al., 2018). A criticism of the average loan balance as a measure of social performance is its indirectness (Morduch, 2000), the failure to address the clients who get better off progressively and demand larger loans. Additionally, the average loan balance is affected by the extreme value of loans (Goedecke et al., 2016, Beisland et al., 2020). A case in point is where big firms, which form 0.1 % of MFI clients, access 14% of the gross loan portfolio (Microfinance Information Exchange (MIX), 2019).
-
-Figure 3 below shows the average loan balances disaggregated by the legal status of MFIs in Africa. The figure is in ascending order. The lowest median average balances are those of NGOs and other forms of MFIs indicating higher social efficiency. At the extreme, commercial banks have the highest average loan balances, followed by cooperatives/ credit unions and then NBFIs. These results are consistent with those of social efficiency, measured using the per cent of female borrowers, where commercial banks and credit unions serve a lower proportion of women.
-
-We now turn to the breadth of outreach measured by the gross loan portfolio advanced by MFIs (Figure 4). Note that we take the logarithm of the gross loans to total assets for all MFIs. The means and the medians for each MFI by legal types are roughly equal. Across the legal types, there is not much disparity in the mean and median loan sizes. However, cooperatives exhibit a wide variation in the gross loans provided. This result is probably due to their differing sizes based on their membership or geographic location. NGOs come second in terms of disparity of loan sizes, followed by NBFIs and commercial banks. Rural banks and other forms of MFIs exhibit the slightest deviation.
-
-<Table1>
-
-
-### The DEA model
-
-In this section, we first run the DEA model to generate the three efficiency scores: financial efficiency, social efficiency and socio-financial efficiency. To run the DEA models, we first eliminate zeros and negative numbers from the inpt and output variables. Next, we mean normalize the data following []. We the summarise the efficiency scores, which are the dependent variables in the regression models together with the independent variables.
-
-As noted earlier, we use the DEA model to generate three efficiency scores. In all cases, the inputs are (). For financial efficiency, the output is OSS. For social efficiency, the outputs are the percentage of female borrowers, average loan balance per borrower, and gross loans to total assets. The outputs for socio-financial efficiency are OSS, percentage of female borrowers, average loan balance per borrower, and gross loans to total assets.
-
-Table 2 shows the summary statistics and correlation matrices for the inputs and outputs of the DEA model. However, these data cannot be applied to DEA as they are. We add a significantly large number to each variable with zeros or negatives to eliminate zeros and negatives. More specifically, we add three (3) to each variable (Ataullah and Le, 2006) to eliminate zeros. In line with Avkiran (2006), we take logarithms of the data. We then run the DEA model using the transformed variables. In the next section, we describe the levels of efficiency observed among MFIs in Africa and then discuss the regression model results on the drivers of the efficiency of MFIs in Africa.
+Table 1 presents summary statistics for the DEA input and output variables. 
 
 ```{r, cache = TRUE, eval=FALSE}
 fineff <- envelope(my_data[, c("dea_liab_equity", "dea_operating_exp")], 
@@ -1106,15 +928,124 @@ finsoc_eff <- envelope(my_data[, c("dea_liab_equity", "dea_operating_exp")],
 ```
 
 
+```{r}
+my_data %>% 
+  
+  select(liabilities_and_equity, 
+         
+         operating_expense_assets, 
+         
+         percent_of_female_borrowers, 
+         
+         average_loan_balance_per_borrower,
+         
+         gross_loan_portfolio_to_total_assets) %>% 
+  
+  skimr::skim_without_charts() %>%
+  
+  select(-n_missing, -complete_rate, -skim_type) %>%
+  
+  rename(Variable = skim_variable, 
+         
+         Mean = numeric.mean, 
+         
+         SD = numeric.sd, Min = numeric.p0,
+         
+         Q1 = numeric.p25, Median = numeric.p50, 
+         
+         Q3 = numeric.p75, Max = numeric.p100) %>% 
+  
+  mutate(Variable = c("Liabilities/Equity", "Operating Expense/Assets", 
+                      
+                      "Female borrowers (%)", "Average Loan", 
+                      
+                      "Gross Loans/Assets")) %>% 
+  
+  kableExtra::kbl(caption = "Summary Statistics: Inputs and Outputs for the DEA Model", 
+             
+             booktabs = TRUE) %>% 
+  
+  kable_classic(full_width = FALSE, font_size = 10) %>% 
+  
+  footnote(general = "Source: Authors construction from the data", general_title = "")
+```
 
-## DEA Efficiency Scores
+Before running the DEA analysis, we start by transforming the inputs and outputs. We add a significantly large number to eliminate zeros and negatives (Ataullah and Le, 2006). In line with Avkiran (2006), we also mean normalize the data. Figure () shows that there is very low correlation between the inputs and outputs. Hence, collinearity will not adversely affect the DEA scores. 
 
-We compute the DEA efficiency scores using bootstraps as proposed by Fethi and Pasiouras (2010). Table 3 shows a summary statistics of the efficiency scores for MFIs in Africa. Given that the model is output-oriented, the interpretation is as follows: given a set of inputs, to what extent are MFIs able to maximise output? Given the nature of MFIs as hybrid enterprises, the maximisation of outputs is more relevant for this study. 
+\blandscape
 
-### Financial Efficiency Scores
-We examine the extent to which MFIs reach the financially excluded sustainably. The first row measures financial efficiency with OSS as the output. The second row represents the social efficiency scores whose outputs are average loan balance and per cent of women borrowers. The third row also measures social efficiency and incorporates the breadth of outreach measured via gross loans to total assets. Row four measures socio-financial efficiency captured using operational self-sufficiency, average loan balance per borrower, and per cent of female borrowers. The last row measures socio-financial efficiency while also including breadth of outreach, gross loans, to total assets.
+\newpage
 
-Table ()  below shows a summary of the efficiency scores. The results show  that the financial efficiency scores are heavily skewed to the right. Figure () visualizes the financial efficiency scores confirming the extent of the skewness. The results show that most MFIs are barely sustainable financially in spite of the paradigm shift towards commercialization. This observation begs the question; do commercially oriented legal forms of MFIs perform better than NGOs? Further, do newer MFIs that took root when donors put emphasis on the financial sustainability of MFIs do better financially than older MFIs? Panel C shows that only cooperatives and rural banks have higher median financial efficiency scores than NGOs. These results imply that it is possible for NGOs to combine the welfare model of reaching the financially excluded with financial sustainability. However, panel D shows that newer MFIs have higher financial sustainability scores relative to older MFIs. These results could mean that newer MFIs focus more on financial sustainability at the expense of financial exclusion or are better at balancing financial sustainability with social goals. 
+```{r, fig.cap="Correlation Matrix for DEA Inputs and Outputs", fig.width = 12, fig.height=8}
+my_data %>% 
+  
+  GGally::ggpairs(columns = c("liabilities_and_equity", "operating_expense_assets", "percent_of_female_borrowers", "average_loan_balance_per_borrower",
+         "gross_loan_portfolio_to_total_assets",
+         "operational_self_sufficiency"), aes(colour = currentlegalstatus), alpha = 0.5) 
+```
+
+
+\elandscape
+
+\newpage
+
+
+## Independent Variables
+Table 2 presents a summary of the independent variables applied in the study. 
+
+```{r}
+tribble(~ Variable_Description, 
+
+"1. Current Legal Status: The legal forms of registration of an MFI are as follows; Commercial Bank, Non-Bank Financial Institution (NBFI), Non-Governmental Organization (NGO), Credit Union/ Cooperative, or Rural Bank. The legal status may dictate the profit orientation and sources of capital for the MFIs. The legal status of an MFI may impact the financing structure in several ways. First, legal status or form typically restricts NGOs from taking deposits, which lowers the debt-equity ratio and deposits to assets, raising the capital asset ratio. Also, NGOs may not venture into capital markets for funds, given their mostly not-for-profit orientation. The opposite is the case for MFIs of commercial banks legal form whose legal status allows for deposits.", "", 
+        
+"2.	Age: MIX classifies MFIs into three categories depending on the time that has elapsed since the MFI started operations- new (0-4 years), young (4-8 years) and mature (over eight years). The variable is hence a dummy. Older firms are likely better established, have a solid reputation and hence likely to attract more debt and deposits. The institutional life cycle view of Bayai and Ikhide (2016) captures the correspondence between age and debt.", "", 
+
+"3. Legal Tradition (Legal): The indicator is a dummy variable with common law countries coded 0, civil law countries 1, and 2 otherwise as per the classification by Oto-Peralías and Romero-Ávila (2014). Typically, common law countries have relatively better financial infrastructure that allows firms to access financial markets easily. Hence, MFIs in common law countries may exhibit higher debt and equity ratios in their capital structures than those in common law and other legal traditions. (Schnyder, Gerhard, Mathias Siems, & Ruth V. Aguilera, 2018)", "", 
+
+"4. Size (Log of Total Assets): We proxy the size of MFI with the natural logarithm of total assets, again using MIX data. Assets are supported by the sum of capital and liabilities or, equivalently, the total value of resources owned or controlled by the MFI resulting from past and current activities and from which the MFI derives future benefits. We expect firms with more assets to have a higher debt capacity and more debt-to-equity ratios, and lower capital to equity ratios. Large firms draw their strength from holding diversified investments and hence higher capacity to absorb risk. Besides, they have easy access to debt markets(Kurshev & Strebulaev, 2015). Furthermore, these firms are likely to attract more deposits, given the trust they inspire in depositors and their marketing reach (Kimmel et al., 2018). We hypothesise that donations vary positively with the size of MFI, as large, older firms have established a reputation with donors.", "", 
+
+"5. Governance/ Institutional Quality (KKM): We create the country level KKM index using the first principal component of the WGI available in the World Bank databases. The index captures the institutional quality in corruption control, government effectiveness, political stability, the rule of law, and voice and accountability (Kaufmann, Kraay, & Mastruzzi, 2011). Firms in countries with better governance can quickly raise debt finance due to ease of contract enforcement — the result, a high debt-equity ratio and a low capital asset ratio. Similarly, the level of deposits mobilisation may be higher in better-governed countries arising from consumer confidence in legislation relating to deposits protection (La Porta, Lopez-de-Silanes, & Shleifer, 2013; Allen et al., 2014). Lastly, MFIs in countries with low KKM may have higher donations as donors opt to circumvent corrupt government channels. We use the terms institutional quality and governance interchangeably throughout the text", "", 
+
+"6. Private Credit to GDP: We capture the total amount of credit advanced to the private sector by financial intermediaries as a proxy for capital markets development concerning the banking sector following Ito and Kawai (2018). The data source is the Global Financial Development Database, GFDD, of the World Bank (See note 4). Private credit to GDP represents the financial resources provided to the private sector by domestic money banks as a share of GDP. Domestic money banks comprise commercial banks and other financial institutions that accept transferable deposits, such as demand deposits. The data is available in WDI. Financial sector development is central to the acquisition of both equity and debt financing. We hypothesise a high debt to equity ratio, and deposits to assets ratios in countries with more robust financial sectors as financial institutions tend to be highly leveraged.", "", 
+
+"7. Stock market capitalisation to GDP: We capture the extent of stock market development using the ratio of stock market capitalisation to GDP to proxy how firms can raise equity capital. Although Africa's equity markets are thin, some relatively large stock markets like South Africa, Kenya, and Ghana exist. The data are from the GFDD.", "", 
+"8. Asset Structure (Tangibility): Asset structure is is measured as the ratio of non-current assets to total assets of an MFI (Microfinance Information Exchange (MIX), 2019). The ratio indicates the extent of investment in physical infrastructure, a significant issue in constraining banking for the poor due to the perceived lack of scale economies to warrant the erection, for instance, of brick and mortar branches (Ledgerwood, 1998). MFIs with a more significant physical presence are likely to attract more deposits. Therefore, they also have a higher capacity to borrow and service debt. Further, tangible assets serve as collateral to protect lenders from the moral hazard problem (Jensen & Meckling, 1976), and hence a positive relationship between debt and asset tangibility (Titman & Wessels, 1988; Kyereboah-Coleman, 2007a).", "", 
+
+"9. Profit Margin: The profit margin is the net operating income divided by financial revenue. The ratio represents the ability of MFIs to generate income from the core mandate of offering financial services like lending, savings, insurance, and so on. Profitability may enhance the capacity of an MFI to secure debt, thus leading to a higher debt to equity ratio and low capital to assets ratio. The opposite is the case when an MFI retains earnings and hence raises the level of equity.", "") %>% 
+  
+  kbl(., caption = "Description of Variables", booktabs = TRUE, longtable = TRUE) %>% 
+  
+  kable_paper(full_width = TRUE) %>% 
+  
+  footnote(number = c("MIX Database on www.themix.org and https://datacatalog.worldbank.org/dataset/mix-market", "WDI on https://databank.worldbank.org/source/world-development-indicators.", "WGI/ KKM on https://databank.worldbank.org/source/worldwide-governance-indicators.", "GFDD on https://www.worldbank.org/en/publication/gfdr/data/global-financial-development-database"), 
+           
+           number_title = "Notes",
+    
+           general = "Authors' construction from the literature",
+           
+           general_title = "Source: ")
+  
+  #knitr::kable(caption = "Description of variables")
+```
+
+
+# Results
+
+## Exploratory Data Analysis 
+
+We examine the indicators of financial and social performance by MFIs in Africa. Here, we focus on taking the individual measures of performance, the proportion of female borrowers, average loan balance per borrower, gross loans to assets and operational self-sufficiency. While the examination of indicator variables does not explicitly measure efficiency (we do this in a later section using DEA), they illustrate the extent to which MFIs fare in their mission. First, Table 2 (above) presents the descriptive statistics. We visualise the data and describe the scope of both financial and social performance, followed by a discussion of the DEA efficiency scores. Next, we discuss the levels of efficiency by MFIs types based on the DEA scores. Finally, we layout and describe the results of the regression model.
+
+### DEA Efficiency Scores
+
+Table 3 shows a summary statistics of the efficiency scores for MFIs in Africa. Given that the model is output-oriented, the interpretation is as follows: given a set of inputs, to what extent are MFIs able to maximise output? Given the nature of MFIs as hybrid enterprises, the maximisation of outputs is more relevant for this study. 
+
+#### Financial Efficiency
+
+Table () shows a summary of the efficiency scores. The mean and median financial efficiency scores are 0.16 and 0.11 respectively ^[The DEA scores range between zero and one, with zero indicating the worst performance and one the best.]. Taken together with Figure 2, the results show  that the financial efficiency scores are heavily skewed to the right. Critically, MFIs are hardly financially sustainable regardless of their legal form, in spite of the paradigm shift towards commercialization. This observation begs the two questions; do commercially oriented legal forms of MFIs perform better than NGOs? Further, do newer MFIs that took root when donors put emphasis on the financial sustainability of MFIs do better financially than older MFIs? 
+
+Figure 2, panel C shows that only cooperatives and rural banks have higher median financial efficiency scores than NGOs. These results do not support the supposition that commercialisation raises the level of financial sustainability given that commercial banks and NBFIs fare worse financially. The poor financial performance by banks and NBFIs can only further worsen their outreach to the financially excluded. This is contrary to the "mission expansion" hypothesis where commercial MFIs generate profits that they then use to reach more financially excluded clients. Further, Figure 2, panel D shows that newer MFIs have higher financial sustainability scores relative to older MFIs. These results could mean that newer MFIs focus more on financial sustainability at the expense of social goals or are better at balancing financial sustainability with social goals. 
+
+Figure (), panel () shows the trends in median financial efficiency scores of MFIs for the period 1999-2020. Cooperatives consistently do better financially than other legal forms. Surprisingly, NGOs and rural banks follow, while NBFIs and commercial banks have the lowest median financial efficiency scores, with commercial banks showing wide variability. The results indicate that commercialization does not necessarily raise financial sustainability, especially in the absence of grants and state subsidies. What is concerning is the observation that financial efficiency is on a downward spiral, meaning that the goals of financial sustainability of MFIs may not be met. The worsening trend in financial performance by MFIs may point to the harm that neo-liberalism, commercialisation, or other unidentified macro-economic factors have on MFIs.
 
 
 ```{r}
@@ -1164,7 +1095,10 @@ my_data %>%
   
   labs(x = "Financial Efficiency Scores", y = "Density", 
        
-       title = "A: Financial Efficiency Scores by MFI legal status")
+       title = "A: Financial Efficiency Scores by MFI legal status") + 
+  
+  theme(plot.title = element_text(size = 10, face = "plain"))
+
   +
 
 ## Plot financial efficiency scores by age 
@@ -1178,7 +1112,9 @@ my_data %>%
   
   labs(x = "Financial Efficiency Scores", y = "Density", 
        
-       title = "B: Financial Efficiency Scores by MFI Age")
+       title = "B: Financial Efficiency Scores by MFI Age") + 
+  
+  theme(plot.title = element_text(size = 10, face = "plain"))
 ) /
 
 (## Plot median financial efficiency scores by MFI legal status
@@ -1194,26 +1130,25 @@ plotter(my_data, x = age, y = fineff.theta_hat, z = age,
         xlabel = "Age", ylabel = "DEA Financial Efficiency Scores", 
         
         title = "D: Median DEA Financial Efficiency Scores by MFI Age")
-)
+) +
+  
+  
+  
+  plot_annotation(title = "Financial Efficiency of MFIs in Africa", 
+                
+                theme = theme(plot.title = element_text(size = 12)))
 ```
 
 \elandscape
 
 \newpage
 
-Overall, financial efficiency appears to have the highest range. Also, the combined social and financial efficiency does not improve much from the social efficiency alone, meaning that financial efficiency does not add much to the overall efficiency. Similarly, the inclusion of the breadth of outreach does not improve the overall efficiency. The correlation coefficients also show that financial and social performance metrics do not have tight coupling.
 
-Further, Figure 2 -6 below show the visualisations for the efficiency metrics. Figure 2 shows the correlation coefficients between financial efficiency, social efficiency and socio-financial efficiency faceted by the legal status of MFIs. Social efficiency and socio-financial efficiency are highly correlated. Financial efficiency does not correlate highly with the rest of the efficiency scores. Except for NGOs and rural banks, the correlation between financial efficiency on the one hand and social efficiency and joint socio-financial efficiency, on the other hand, is negative. The results suggest NGOs and rural banks strike a better balance between financial and social goals, although the relationship is weak.
+#### Social Efficiency
 
-In Figure 4, we plot the median financial and social performance of MFIs faceted by age. Across all age groups, NGOs fare better socially. Credit unions and rural banks fare better financially but fare the worst socially, as Figure 3 also shows. NBFIs consistently fare the worst financially. NGOs appear better in balancing between financial performance and social performance, while the trade-off between financial and social performance is apparent. Finally, Figure 5 and Figure 6 show a worsening financial and social positioning of MFIs, except commercial banks. It means that embracing neo-liberalism may be harming social performance while not helping improve financial performance either.
+Overall, the social efficiency of MFIs in Africa is high, with a mean and median of 0.79 and 0.78, respectively. However, as Figure () and () show, NGOs have consistently the highest levels of social efficiency, followed by NBFIs and other forms of MFIs. Rural banks and credit unions respectively are the least socially efficient. Considering the financial efficiency scores, it appears that commercialization causes mission drift. Also, both NGOs and NBFIs show a notable decline in social performance over time, which could also be an indictment on the shift towards financial sustainability. 
 
-Figure 5 shows a trend of declining financial performance over time for all but commercial banks, while figure 6 shows a similar trend for social performance. The results may point to the harm that neo-liberalism, commercialisation, or other unidentified macro-economic factors have on the financial and social output of MFIs. Figure 9 shows that NGOs have the highest levels of social efficiency, followed by NBFIs and other forms of MFIs, while rural banks and credit unions respectively are the least efficient going by the median efficiency scores. The literature on the welfare theory of microfinance supports this observation. The bell shape of the NGO plot indicates that NGOs overwhelmingly emphasise social performance. Again, figure 10 visualises social performance with the breadth of outreach using gross loans included. Again, NGOs dominate, pointing to their focus both in terms of breadth and depth of outreach.
-
-In figure 11, we combine the social and financial metrics with the social metric excluding gross loans, the measure of the breadth of outreach, a similar pattern where NGOs dominate repeats. When we use both the breadth and depth of outreach and operational self-sufficiency to generate a social and financial efficiency metric, NGOs still dominate. Again, Figure 13 below shows that the median financial efficiency metric is highest for NGOs, which is an oddity given that we would expect commercial firms to dominate.
-
-It is also possible that donations and subsidies play a significant role in upping the financial performance exhibited by NGOs relative to other legal forms of MFIs. It is worth noting that on an absolute level, MFIs are hardly financially sustainable regardless of their legal form- but NGOs are relatively better off (see Figure 1). Overall, these results are not supportive of the mission drift hypothesis so far. In the next section, we detail the regression output from the drivers of the efficiency of MFIs in Africa.
-
-### Social Efficiency
+An important observation is that younger MFIs have a higher level of social performance than mature MFIs. earlier, we saw that younger MFIs also have better financial performance than older MFIs. The implication is that younger MFIs are better at balancing financial and social goals than mature MFIs. The explanation could be that younger MFIs have developed their business model in the face of declining donor support or in the complete absence of donor funding and state subsidies. Older MFIs that are required to shift from the donor and state subsidy reliant model to the commercial model do not fare as well. Given that mature MFIs are larger and reach more financially excluded clients, the issue then is how to support mature MFIs to transition to the financial sustainability model without reducing their outreach. 
 
 \blandscape
 
@@ -1230,7 +1165,10 @@ my_data %>%
   
   labs(x = "Social Efficiency Scores", y = "Density", 
        
-       title = "A: Social Efficiency Scores by MFI legal status")
+       title = "A: Social Efficiency Scores by MFI legal status") + 
+  
+  theme(plot.title = element_text(size = 10, face = "plain"))
+
   +
 
 ## Plot financial efficiency scores by age 
@@ -1244,7 +1182,10 @@ my_data %>%
   
   labs(x = "Social Efficiency Scores", y = "Density", 
        
-       title = "B: Social Efficiency Scores by MFI Age")
+       title = "B: Social Efficiency Scores by MFI Age") + 
+  
+  theme(plot.title = element_text(size = 10, face = "plain"))
+
 ) /
 
 (## Plot median financial efficiency scores by MFI legal status
@@ -1260,24 +1201,105 @@ plotter(my_data, x = age, y = soceff.theta_hat, z = age,
         xlabel = "Age", ylabel = "DEA Social Efficiency Scores", 
         
         title = "D: Median DEA Social Efficiency Scores by MFI Age")
-)
+) + 
+  
+  plot_annotation(title = "Social Efficiency of MFIs in Africa", 
+                
+                theme = theme(plot.title = element_text(size = 12)))
 ```
 
 \elandscape
 
 
-#### The Independent Variables
+#### Financial and Social Efficiency Scores
 
+In figure 11, we combine the social and financial metrics with the social metric excluding gross loans, the measure of the breadth of outreach, a similar pattern where NGOs dominate repeats. When we use both the breadth and depth of outreach and operational self-sufficiency to generate a social and financial efficiency metric, NGOs still dominate. Again, Figure 13 below shows that the median financial efficiency metric is highest for NGOs, which is an oddity given that we would expect commercial firms to dominate.
+
+In Figure 4, we plot the median financial and social performance of MFIs faceted by age. Across all age groups, NGOs fare better socially. Credit unions and rural banks fare better financially but fare the worst socially, as Figure 3 also shows. NBFIs consistently fare the worst financially. NGOs appear better in balancing between financial performance and social performance, while the trade-off between financial and social performance is apparent. Finally, Figure 5 and Figure 6 show a worsening financial and social positioning of MFIs, except commercial banks. It means that embracing neo-liberalism may be harming social performance while not helping improve financial performance either.
+
+Also, the combined social and financial efficiency does not improve much from the social efficiency alone, meaning that financial efficiency does not add much to the overall efficiency. Similarly, the inclusion of the breadth of outreach does not improve the overall efficiency. The correlation coefficients also show that financial and social performance metrics do not have tight coupling.
+
+\newpage
+
+\blandscape
+
+```{r, fig.width = 12, fig.height=8, fig.cap = "Financial versus Social Efficiency of MFIs in Africa"}
+my_data %>% 
+  
+  ggplot(aes(x = fineff.theta_hat, y = soceff.theta_hat, 
+             
+             col = currentlegalstatus, 
+             
+             fill = currentlegalstatus)) + 
+  
+  geom_hex() +
+  
+  labs(x = "Financial Efficiency", y = "Social Efficiency", 
+       
+       title = "Financial versus Social Efficiency of MFIs in Africa") + 
+  
+  theme(legend.position = "bottom", legend.title = element_blank())
+```
+
+\elandscape
+
+\newpage
 
 
 ```{r}
 my_data %>% 
   
-  select(operating_expense_assets, debt_to_equity_ratio,
+  group_by(year, currentlegalstatus) %>% 
+  
+  summarize(median_fineff = median(fineff.theta_hat),
+            
+            median_soceff = median(soceff.theta_hat)) %>% 
+  
+  filter(median_fineff <= 0.5) %>% 
+  
+  ggplot(mapping = aes(x = year, y = median_fineff, 
+                       
+                       col = currentlegalstatus)) + 
+  
+  geom_line() +
+  
+  labs(x = "Year", y = "Financial Efficiency", 
+                     
+                     title = "Trends in MFI Financial Efficiency, 1999-2020") + 
+  
+  theme(legend.position = "bottom", legend.title = element_blank())
+
+#########################################################################
+my_data %>% 
+  
+  group_by(year, currentlegalstatus) %>% 
+  
+  summarize(median_fineff = median(fineff.theta_hat),
+            
+            median_soceff = median(soceff.theta_hat)) %>% 
+  
+  ggplot(mapping = aes(x = year, y = median_soceff, 
+                       
+                       col = currentlegalstatus)) + 
+  
+  geom_line() + labs(x = "Year", y = "Social Efficiency", 
+                     
+                     title = "Trends in MFI Social Efficiency, 1999-2020") + 
+  
+  theme(legend.position = "bottom", legend.title = element_blank())
+```
+
+
+### The Independent Variables
+
+Table () shows summary statistics for the independent variables. Profit margin has the highest variability due to extreme minimum observation. To proxy the size of an MFI, we take the logarithm of assets. We use all the other independent variables without transformation.
+
+```{r}
+my_data %>% 
+  
+  select(asset_structure, kkm, pcrdbgdp, 
          
-         donations_assets_ratio, capital_asset_ratio, 
-         
-         asset_structure, kkm, education) %>% 
+         stmktcap, profit_margin, assets) %>% 
   
   skimr::skim_without_charts() %>%
   
@@ -1293,25 +1315,28 @@ my_data %>%
          
          Q3 = numeric.p75, Max = numeric.p100) %>% 
   
-  mutate(Variable = c("Operating Expense to Assets", "Debt-to-Equity Ratio", 
+  mutate(Variable = c("Asset Structure", "KKM", 
                       
-                      "Dnations to Assets Ratio", "Capital to Assets Ratio", 
+                      "Private Credit", "Stock Market", 
                       
-                      "Asset Structure", "KKM", "Education")) %>% 
+                      "Profit Margin", "Assets")) %>% 
   
   kableExtra::kbl(caption = "Summary Statistics: Independent Variables for Regression Model", 
              
              booktabs = TRUE) %>% 
   
-  kable_classic(full_width = FALSE, font_size = 10)
+  kable_classic(full_width = FALSE, font_size = 10) %>% 
+  
+  footnote(number = c("Private credit refers to credit advanced by deposit taking banks as a percentage of GDP", "Stock market is the stock market capitalisation as a percentage of GDP"), number_title = "Note: ", general = "Source: Authors construction from the data", general_title = "")
 ```
 
+In the next section, we detail the regression output from the drivers of the efficiency of MFIs in Africa.
 
-## Drivers of the Financial and Social Efficiency of MFIs in Africa
+# Regression Analysis
 
-This section provides results from the regression models on the drivers of socio-financial efficiency of MFIs in Africa.
+In this section, we regress each of the DEA efficiency scores against the dependent variables. We bootstrap the the DEA efficiency scores before applying the scores for testing hypothesis regarding the regression model coefficients [@simar2000general;@tziogkidis2012bootstrap;@fethi2010assessing]. This section provides results from the regression models on the drivers of socio-financial efficiency of MFIs in Africa.
 
-### Drivers of Social Efficiency of MFIs
+## Drivers of Social Efficiency of MFIs
 
 Table 4 (below) shows the regression results. In this section, we focus on social efficiency. Social efficiency has two dimensions, breadth and depth. In computing DEA scores for depth, we used the per cent of female borrowers and average loan balance per borrower. An MFI has deeper outreach if it reaches more women, given that they form the majority of the financially excluded, mainly due to social and cultural conditions in Africa. Researchers use the average loan balance to proxy depth with a lower value associated with deeper outreach. To capture the breadth, we use the gross loans to total assets, which shows the scale of outreach (Beisland et al., 2020). An MFI with a more significant gross loans ratio to assets reaches more people by offering more loans or offering loans of larger values or both. Given that both depth and breadth are desirable, we combine the metrics to capture social efficiency, including breadth.
 
@@ -1387,7 +1412,7 @@ Capital to assets ratio, captured using the equity capital to assets ratio, also
 
 Financial literacy could be the key. However, the objective of MFIs is not to serve the already well-off financially but rather to uplift the poor and financially excluded to be able to participate in the formal economic system. Nevertheless, education appears a vital catalyst that points to the need for a multifaceted approach to tackling financial exclusion that should involve MFIs, governments, and other stakeholders in developing platforms to deliver financial inclusion products and a broader set of services for sustainable development. The result here is broadly consistent with prior research, although age and size do not appear crucial in Africa (Hermes and Hudon, 2018, Gutiérrez-Nieto et al., 2009).
 
-### Financial Efficiency of MFIs
+## Financial Efficiency of MFIs
 
 The financial efficiency of MFIs shows some markedly different pattern from social performance and the socio-financial performance of MFIs. First, unlike social performance, where the efficiency score has a median of 0.92 on a scale of zero to one, financial efficiency is relatively low with a median of 0.41. Thus, most MFIs emphasise social performance or struggle to balance social and financial performance (Mersland and Strøm, 2010).
 
@@ -1461,28 +1486,28 @@ As in social efficiency, the capital to assets ratio relates positively with fin
 
 Lastly, asset structure has a negative relationship with financial performance, highlighting the diseconomies of scale associated with serving poor borrowers. However, technology and adoption of agency banking reduce the need for brick and mortar branches which may allow MFIs to expand outreach without incurring costs of physical infrastructure (Iman, 2018, Demirguc-Kunt et al., 2018). However, given that most financially excluded people also suffer from financial illiteracy, MFIs still must deploy field workers or mobile banking units in targeted areas. Lastly, education has a negative but insignificant effect on financial performance, which could hold given that as human capacity increases, people resort to the mainstream financial system (Allen et al., 2014).
 
-### Socio-Financial Efficiency of MFIs
+## Socio-Financial Efficiency of MFIs
 
 Like social efficiency, the drivers of socio-financial efficiency are legal status, operating expenses to assets, capital to assets ratio, and education. Also, capital structure and donations are not significant drivers of socio-financial efficiency. These results may indicate that the funding providers' pressure does not swamp the depth of outreach. The implication here is that the extent of social performance may primarily be the domain of MFIs management and indeed a corporate governance issue, as Abeysekera et al. (2014) note. These results are inconsistent with the welfare school's view on an inverse relationship between commercial capital and social outreach. More directly, the results support financial sustainability, as we see a significant positive relationship between social performance and commercial funding – capital to assets ratio. Overall, it shows that there would be no harm in supplementing commercial funding with donations and subsidies if the effects on social performance are muted (Armendáriz and Szafarz, 2011).
 
-### Robustness Tests
+## Robustness Tests
 We first run the fixed effects model for the entire dataset for robustness, with the results reported in table 5. Secondly, we check for outliers by winsorising the data. We remove the top 10% and the bottom 10% observations of the independent variables and run the fixed and random effects regressions. The results are in Appendix 6. The results remain to correspond to those in Table 4 except for the magnitude of the regression coefficients. Appendix 7 is a plot examining the normality of residuals for the regression outputs in Table 4. The results show slight deviations from normality, which may not be an issue given the large sample size.
 
 Given the panel structure of data, there is a possibility of cross-sectional dependence and serial correlation. We correct the standard errors – presenting the panel corrected standard errors to deal with these problems. Appendix 7 shows the QQ-plots for the residuals. Except for the regression with financial efficiency as the dependent variable, the rest do not depart much from normality.
 
-## Conclusion
+# Conclusion
 This study examined the levels and drivers of financial efficiency, social efficiency, and socio-financial efficiency of MFIs in Africa, particularly along MFI legal status lines. NGOs have the highest levels of social efficiency and socio-financial efficiency, whereas cooperatives have the least. In terms of financial efficiency, cooperatives and rural banks perform best while NBFIs trail. Social efficiency and socio-financial efficiency drivers are legal statuses, operating expense to assets ratio, capital to assets ratio, asset structure, and education. For financial efficiency, the drivers are similar to social efficiency, except that education is not a significant driver. Notably, capital structure positively influences both financial and social efficiency outcomes that support the need for MFIs to seek external capital. However, operating expenses positively relate to social performance and negatively relate to financial performance, pointing to mission drift. The legitimacy of transformed MFIs rests with how well they balance the need to access commercial capital and the profit motive that may negatively impact their overarching social mission.
 
-## References
+# References
 
 
 ::: {#refs}
 :::
 
 
-## Appendices
+# Appendices
 
-### Appendix 1: Hausmann Test for the Choice Between Fixed and Random effects
+## Appendix 1: Hausmann Test for the Choice Between Fixed and Random effects
 
 ```{r}
 rbind(
@@ -1501,3 +1526,51 @@ hausmann_test2(my_data, my_data$soceff.theta_hat)
   kable_classic()
 ```
 
+\blandscape
+
+## Appendix 2: Visualization of DEA Inputs and Outputs
+
+
+```{r, fig.cap="Financial Sustainability and Social Performance Metrics for MFIs in Africa", fig.width = 12, fig.height=8}
+(plotter(my_data, x = currentlegalstatus, 
+        
+        y = operational_self_sufficiency, z = currentlegalstatus, 
+        
+        xlabel = "", ylabel = "OSS", 
+        
+        title = "") +
+
+
+plotter(my_data, x = currentlegalstatus, 
+        
+        y = percent_of_female_borrowers, z = currentlegalstatus, 
+        
+        xlabel = "", ylabel = "% of Female Borrowers", 
+        
+        title = "")) /
+
+
+(plotter(my_data, x = currentlegalstatus, 
+        
+        y = average_loan_balance_per_borrower, z = currentlegalstatus, 
+        
+        xlabel = "", ylabel = "Average Loan Balance", 
+        
+        title = "") +
+
+
+plotter(my_data, x = currentlegalstatus, 
+        
+        y = gross_loan_portfolio_to_total_assets, z = currentlegalstatus, 
+        
+        xlabel = "", ylabel = "Gross Loans to Assets", 
+        
+        title = "")) +
+  
+plot_annotation(title = "OSS, Female Borrowers, Average Loans, and Gross Loans of MFIs in Africa", 
+                
+                theme = theme(plot.title = element_text(size = 12)))
+
+```
+
+\elandscape
