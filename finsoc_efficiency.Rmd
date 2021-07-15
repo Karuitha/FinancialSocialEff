@@ -171,6 +171,13 @@ soceff <- read.csv("soc_eff.csv") %>%
   
   set_names(c("soceff.theta_hat", "soceff.theta_ci_low", "soceff.theta_ci_high"))
 
+## Financial and social efficiency indicators 
+
+finsoc_eff <- read.csv("finsoc_eff.csv") %>% 
+  
+  select(-X) %>% 
+  
+  set_names(c("finsoceff.theta_hat", "finsoceff.theta_ci_low", "finsoceff.theta_ci_high"))
 ```
 
 
@@ -395,7 +402,10 @@ dea_oss = dea_oss / mean(dea_oss)) %>%
 bind_cols(fineff) %>% 
 
 ## Bind the financial efficiency scores   
-bind_cols(soceff) 
+bind_cols(soceff) %>% 
+
+## Bind the financial and social efficiency scores   
+bind_cols(finsoc_eff) 
   
 ## Transform both financial and social efficiency for reressions
 #mutate(fineff = log(fineff/(1-fineff))) %>% 
@@ -463,7 +473,6 @@ modelling2 <- function(data, depvar,
   unadjusted <- plm(depvar ~ currentlegalstatus + 
             age + kkm + asset_structure + 
             pcrdbgdp + stmktcap +
-            profit_margin+ 
             log(assets) + factor(year), 
           data = data, effect = effect,
           model = model,inst.method = inst.method, 
@@ -491,7 +500,6 @@ hausmann_test2 <- function(data, depvar){
   fixed <- plm(depvar ~ currentlegalstatus + 
             age + kkm + asset_structure + 
             pcrdbgdp + stmktcap +
-            profit_margin+ 
             log(assets), 
                data = data, effect = "individual", model = "within", 
       index = c("mfiid", "year")) 
@@ -499,7 +507,6 @@ hausmann_test2 <- function(data, depvar){
   random <- plm(depvar ~ currentlegalstatus + 
             age + kkm + asset_structure + 
             pcrdbgdp + stmktcap +
-            profit_margin+ 
             log(assets), 
           data = data, effect = "individual", model = "random", 
       index = c("mfiid", "year"))
@@ -1047,12 +1054,15 @@ Figure 2, panel C shows that only cooperatives and rural banks have higher media
 
 Figure (), panel () shows the trends in median financial efficiency scores of MFIs for the period 1999-2020. Cooperatives consistently do better financially than other legal forms. Surprisingly, NGOs and rural banks follow, while NBFIs and commercial banks have the lowest median financial efficiency scores, with commercial banks showing wide variability. The results indicate that commercialization does not necessarily raise financial sustainability, especially in the absence of grants and state subsidies. What is concerning is the observation that financial efficiency is on a downward spiral, meaning that the goals of financial sustainability of MFIs may not be met. The worsening trend in financial performance by MFIs may point to the harm that neo-liberalism, commercialisation, or other unidentified macro-economic factors have on MFIs.
 
-
 ```{r}
 ## Summarise all efficiency scores here
 my_data %>% 
   
-  skim_without_charts(fineff.theta_hat, soceff.theta_hat) %>% 
+  skim_without_charts(fineff.theta_hat, soceff.theta_hat, 
+                      
+                      finsoceff.theta_hat
+                      
+                      ) %>% 
   
   select(-skim_type, -n_missing, -complete_rate) %>% 
   
@@ -1061,6 +1071,8 @@ my_data %>%
     skim_variable == "fineff.theta_hat" ~ "financial Efficiency",
     
     skim_variable == "soceff.theta_hat" ~ "Social Efficiency",
+    
+    skim_variable == "finsoceff.theta_hat" ~ "Financial and Social Efficiency",
     
     TRUE ~ skim_variable
     
@@ -1079,7 +1091,9 @@ my_data %>%
   kable_classic(full_width = FALSE, font_size = 10)
 ```
 
+
 \blandscape
+
 \newpage
 
 ```{r, fig.cap="Financial Efficiency Scores for MFIs in Africa", fig.width = 12, fig.height=8}
@@ -1219,6 +1233,69 @@ In Figure 4, we plot the median financial and social performance of MFIs faceted
 
 Also, the combined social and financial efficiency does not improve much from the social efficiency alone, meaning that financial efficiency does not add much to the overall efficiency. Similarly, the inclusion of the breadth of outreach does not improve the overall efficiency. The correlation coefficients also show that financial and social performance metrics do not have tight coupling.
 
+\blandscape
+\newpage
+
+```{r, fig.cap="Financial and Social Efficiency Scores for MFIs in Africa", fig.width = 12, fig.height=8}
+(
+## Plot Social efficiency scores by legal status
+my_data %>% 
+  
+  ggplot(mapping = aes(x = finsoceff.theta_hat, 
+                       
+        fill = currentlegalstatus, col = currentlegalstatus)) + 
+  
+  geom_density(alpha = 0.5) + theme(legend.position = "bottom", legend.title = element_blank()) +
+  
+  labs(x = "Financial and Social Efficiency Scores", y = "Density", 
+       
+       title = "A: Financial and Social Efficiency Scores by MFI legal status") + 
+  
+  theme(plot.title = element_text(size = 10, face = "plain"))
+
+  +
+
+## Plot financial efficiency scores by age 
+my_data %>% 
+  
+  ggplot(mapping = aes(x = finsoceff.theta_hat, 
+                       
+        fill = age, col = age)) + 
+  
+  geom_density(alpha = 0.5) + theme(legend.position = "bottom", legend.title = element_blank()) +
+  
+  labs(x = "Financial and Social Efficiency Scores", y = "Density", 
+       
+       title = "B: Financial and Social Efficiency Scores by MFI Age") + 
+  
+  theme(plot.title = element_text(size = 10, face = "plain"))
+
+) /
+
+(## Plot median financial efficiency scores by MFI legal status
+plotter(my_data, x = currentlegalstatus, y = finsoceff.theta_hat, z = currentlegalstatus, 
+        
+        xlabel = "Current Legal Status", ylabel = "DEA Financial and Social Efficiency Scores", 
+        
+        title = "C: Median DEA Financial and Social Efficiency Scores by MFI Legal Status") +
+
+## Plot median financial efficiency scores by MFI age
+plotter(my_data, x = age, y = finsoceff.theta_hat, z = age, 
+        
+        xlabel = "Age", ylabel = "DEA Financial and Social Efficiency Scores", 
+        
+        title = "D: Median DEA Financial and Social Efficiency Scores by MFI Age")
+) + 
+  
+  plot_annotation(title = "Financial and Social Efficiency of MFIs in Africa", 
+                
+                theme = theme(plot.title = element_text(size = 12)))
+```
+
+
+\elandscape
+
+
 \newpage
 
 \blandscape
@@ -1286,7 +1363,9 @@ my_data %>%
                      
                      title = "Trends in MFI Social Efficiency, 1999-2020") + 
   
-  theme(legend.position = "bottom", legend.title = element_blank())
+  theme(legend.position = "bottom", legend.title = element_blank()) + 
+  
+  annotate("text", x = 2019, y = 0.86, label = "NGOs")
 ```
 
 
@@ -1334,87 +1413,21 @@ In the next section, we detail the regression output from the drivers of the eff
 
 # Regression Analysis
 
-In this section, we regress each of the DEA efficiency scores against the dependent variables. We bootstrap the the DEA efficiency scores before applying the scores for testing hypothesis regarding the regression model coefficients [@simar2000general;@tziogkidis2012bootstrap;@fethi2010assessing]. This section provides results from the regression models on the drivers of socio-financial efficiency of MFIs in Africa.
-
-## Drivers of Social Efficiency of MFIs
-
-Table 4 (below) shows the regression results. In this section, we focus on social efficiency. Social efficiency has two dimensions, breadth and depth. In computing DEA scores for depth, we used the per cent of female borrowers and average loan balance per borrower. An MFI has deeper outreach if it reaches more women, given that they form the majority of the financially excluded, mainly due to social and cultural conditions in Africa. Researchers use the average loan balance to proxy depth with a lower value associated with deeper outreach. To capture the breadth, we use the gross loans to total assets, which shows the scale of outreach (Beisland et al., 2020). An MFI with a more significant gross loans ratio to assets reaches more people by offering more loans or offering loans of larger values or both. Given that both depth and breadth are desirable, we combine the metrics to capture social efficiency, including breadth.
-
-\blandscape
-
-\newpage
-
-```{r}
-soceff_reg_fx <- modelling2(my_data, my_data$soceff.theta_hat)
-
-soceff_reg_fx3 <- modelling2(data3, data3$soceff.theta_hat)
-
-soceff_reg_fx5 <- modelling2(data5, data5$soceff.theta_hat)
-
-soceff_reg_rn <- modelling2(my_data, my_data$soceff.theta_hat, model = "random")
-
-soceff_reg_rn3 <- modelling2(data3, data3$soceff.theta_hat, model = "random")
-
-soceff_reg_rn5 <- modelling2(data5, data5$soceff.theta_hat, model = "random")
-```
-
-
-```{r}
-inference_m4011 <- coeftest(soceff_reg_fx, vcov = vcovBK(soceff_reg_fx, method = "arellano", type="HC1", cluster = "group"))
-
-inference_m4111 <- coeftest(soceff_reg_fx3, vcov = vcovBK(soceff_reg_fx3, method = "arellano", type="HC1", cluster = "group"))
-
-inference_m4211 <- coeftest(soceff_reg_fx5 , vcov = vcovBK(soceff_reg_fx5, method = "arellano", type="HC1", cluster = "group"))
-
-inference_m4311 <- coeftest(soceff_reg_rn, vcov = vcovBK(soceff_reg_rn, method = "arellano", type="HC1", cluster = "group"))
-
-inference_m4411 <- coeftest(soceff_reg_rn3, vcov = vcovBK(soceff_reg_rn3, method = "arellano", type="HC1", cluster = "group"))
-
-inference_m4511 <- coeftest(soceff_reg_rn5, vcov = vcovBK(soceff_reg_rn5, method = "arellano", type="HC1", cluster = "group"))
-```
-
-
-
-```{r, results='asis'}
-stargazer(soceff_reg_fx, soceff_reg_fx3, 
-          
-         soceff_reg_fx5, soceff_reg_rn, 
-         
-         soceff_reg_rn3, soceff_reg_rn5,
-         
-         title = "Regression Output for Social Efficiency (Standard Errors in Brackets)", 
-          
-          align = TRUE, font.size = "footnotesize", header = FALSE, 
-         
-         se = list(inference_m4011[,2], inference_m4111[,2], inference_m4211[,2], 
-          
-          inference_m4311[,2], inference_m4411[,2], inference_m4511[,2]),
-         
-          omit = c("year.", "Constant"),
-          
-          add.lines = list(c("Model", "Within", "Within", "Within", 
-                        
-            "Random", "Random", "Random"), 
-            
-            c("Data", "Full", ">=3 Years", ">=5 Years", 
-                                             
-            "Full", ">=3 Years", ">=5 Years")))
-```
-
-\elandscape
-
-\newpage
-
-Social efficiency drivers are legal status, operating expense to assets, capital to assets ratio, and education. All else held constant, NGOs have the highest level of social performance in depth and breadth. NBFIs, commercial banks and rural banks follow, while credit unions trail. The results are consistent with the data visualisations. Credit unions have the set objective of serving subscribed members within a set geographic location or common professional background, and it is not their mission to explicitly target social performance (Mathuva et al., 2017). The contestation here is between NGOs and the other commercial entities, excluding credit unions. Although the gaps in social performance are not wide, the results illustrate that MFIs that exclusively target social performance tend to achieve more socially. Hence the role of the mission of an MFI is central to achieving social objectives, a view that is in line with findings by Berbegal-Mirabent et al. (2019).
-
-Operating expense to assets ratio positively relates to social performance – which appears trivial given that MFIs must spend more to reach out to the financially excluded. As the literature shows, serving the poor is expensive as they are in remote geographic locations and often dispersed (Armendáriz and Morduch, 2010). However, as we will point out later (section), operating expenses hurt profitability directly. Hence, higher operating expenses could conflict with financial sustainability, which implies mission drift.
-Capital to assets ratio, captured using the equity capital to assets ratio, also positively relates to social performance. The implication is that firms that are better capitalised better achieve social objectives. However, to increase equity capital, MFIs should enter mainstream capital markets where financial performance plays a crucial role in successful securities subscriptions. Lastly, education positively drives social performance, meaning that a better educated MFI consumer base benefits more from the socio-economic objectives of the MFI programs.
-
-Financial literacy could be the key. However, the objective of MFIs is not to serve the already well-off financially but rather to uplift the poor and financially excluded to be able to participate in the formal economic system. Nevertheless, education appears a vital catalyst that points to the need for a multifaceted approach to tackling financial exclusion that should involve MFIs, governments, and other stakeholders in developing platforms to deliver financial inclusion products and a broader set of services for sustainable development. The result here is broadly consistent with prior research, although age and size do not appear crucial in Africa (Hermes and Hudon, 2018, Gutiérrez-Nieto et al., 2009).
+In this section, we regress each of the DEA efficiency scores against the dependent variables. We bootstrap the the DEA efficiency scores before applying the scores for testing hypothesis regarding the regression model coefficients [@simar2000general;@tziogkidis2012bootstrap;@fethi2010assessing]. he purpose of using the bootstrapping approach is
+two-fold: first, to obtain the bias corrected estimates and the confidence
+intervals of DEA-efficiency scores and second, to overcome the correlation
+problem of DEA-efficiency scores and to provide consistent inferences in
+explaining the determinants of financial and social efficiency [@assaf2010improving]. The bootstrapped DEA scores serve as the dependent variables in the regression analysis. This section provides results from the regression models on the drivers of socio-financial efficiency of MFIs in Africa.
 
 ## Financial Efficiency of MFIs
 
-The financial efficiency of MFIs shows some markedly different pattern from social performance and the socio-financial performance of MFIs. First, unlike social performance, where the efficiency score has a median of 0.92 on a scale of zero to one, financial efficiency is relatively low with a median of 0.41. Thus, most MFIs emphasise social performance or struggle to balance social and financial performance (Mersland and Strøm, 2010).
+Table () shows the results of the regression analysis with financial efficiency as the dependent variable. The significant drivers of financial efficiency are asset structure and size, proxied by the logarithm of total assets. Current legal status has a weak relationship with financial efficiency. The regression analysis shows that commercial banks and rural banks have significantly better financial efficiency which goes aginst the visualisation in table (). The extreme values in financial performance of banks and rural banks could explain this contradicition. But overall, NGOs do better financially than all the legal forms of MFIs except cooperatives. 
+
+The asset structure of MFIs has an inverse relationship with financial efficiency. As noted earlier, asset structure or asset tangibility is the ratio of non-current assets to total assets of an MFI. The results then imply that investment in physical infrastructure harms financial sustainability (Iman, 2018, Demirguc-Kunt et al., 2018). The results are consistent with the theory because serving the financially excluded is expensive and may not yield economies of scale to offset the investment in physical infrastructure by MFIs. 
+
+The advent of Fintech allows MFIs to reach out to the financially excluded without high expenditures in brick an mortar branches. However, given that most financially excluded people also suffer from financial illiteracy, MFIs still must deploy field workers or mobile banking units in targeted areas. (Allen et al., 2014). Hence, there is an opportunity for research into the extent to which Fintech affects the investment in physical infrastructure, profitability and outreach of MFIs in Africa.
+
+The size of an MFI is also negatively related to financial efficiency of MFIs in Africa. Large, older MFIs have lower financial efficiency scores relative to smaller, younger which could arise due to dis-economies of scale. Also, larger, older MFIs may not emphasize financial sustainability given they receive relatively more donations. If donors emphasize outreach to financial sustainability, then this could explain the lower levels of financial performance by older MFIs. The ratio of stock market capitalisation to GDP has a weak positive relationship with financial efficiency, implying that MFIs operating in countries with better functioning capital markets exhibit better financial performance. The ratio of private credit to GDP is insignificant. The remaining variables, age and institutional quality have no significant relationship with financial efficiency. However, as we saw earlier in table (), younger MFIs have marginally higher financial performance which is not significant in the regression. 
 
 \newpage
 
@@ -1480,11 +1493,82 @@ stargazer(fineff_reg_fx, fineff_reg_fx3,
 
 \newpage
 
-As in prior results, the debt-equity mix and donations do not affect financial performance significantly. The significant drivers of financial efficiency are operating expenses to assets ratio, capital to assets ratio, and asset structure. Operating expenses relate negatively to financial efficiency, which is not unexpected as expenses drive down profitability. The inverse operating expense- financial efficiency relationship is the reverse of the positive link between social performance and operating expenses. The relation suggests that mission drift is likely. However, as previous literature shows, the extent of mission drift also depends on internal governance mechanisms (Campion and White, 1999, Abeysekera et al., 2014).
+## Drivers of Social Efficiency of MFIs
 
-As in social efficiency, the capital to assets ratio relates positively with financial efficiency. One of the main reasons for commercialisation is access to commercial capital. That more capital enhances both financial and social performance is a good thing. It could be that external capital allows MFIs to scale their operations or that the discipline induced due to monitoring by shareholders pushes managers to be more efficient. The pressure from shareholders could lead to mission drift where managers focus less on social mission and more on financial objectives of the MFI (Serrano-Cinca and Gutiérrez-Nieto, 2014). Lastly, the financial performance of an MFI varies negatively with asset structure. The observation is in line with the diseconomies of scale associated with serving dispersed, low-income clients where physical infrastructure may take longer to pay back or may not be enough to reach the target market to the point of harnessing economies of scale (Kodongo and Kendi, 2013).
+Unlike financial performance, the legal form of an MFI is the dominant driver of social performance. Consistent with figure (), NGOs have significantly much higher levels of social performance than all the other legal forms of MFIs. The concerns by the welfare school of microfinance is that the levels of outreach by NGOs to the financially excluded could be affected by focusing on financial sustainability. However, as the previous section shows, NGOs do not fare badly in financial efficiency than other legal forms of MFIs. It means, therefore, that NGOs could aim at a degree of financial efficiency while still maintaining their social goals. 
 
-Lastly, asset structure has a negative relationship with financial performance, highlighting the diseconomies of scale associated with serving poor borrowers. However, technology and adoption of agency banking reduce the need for brick and mortar branches which may allow MFIs to expand outreach without incurring costs of physical infrastructure (Iman, 2018, Demirguc-Kunt et al., 2018). However, given that most financially excluded people also suffer from financial illiteracy, MFIs still must deploy field workers or mobile banking units in targeted areas. Lastly, education has a negative but insignificant effect on financial performance, which could hold given that as human capacity increases, people resort to the mainstream financial system (Allen et al., 2014).
+The results are consistent with the data visualisations. Credit unions have the set objective of serving subscribed members within a set geographic location or a common professional background, and it is not their mission to explicitly target social performance (Mathuva et al., 2017). The contestation here is between NGOs and the other commercial entities, excluding credit unions. The results illustrate that MFIs that exclusively target social performance tend to achieve more socially. Hence the place of social mission of an MFI is central to achieving social objectives, a view that is in line with findings by Berbegal-Mirabent et al. (2019).
+
+Both stock markets capitalisation to GDP and private credit to GDP have a negative and significant relationship with social performance. These two metrics capture the levels of capital market development. People in countries with higher levels of financial development have lower incidences of financial exclusion, on average, relative to people in countries with lower levels of financial inclusion. This observation is in spite of the concurrence in the literature that ability to access financial services does not necessarily translate into use of financial services. However, access to financial services is a necessary precondition for people to use financial services. Financial development means better financial infrastructure that allowing people who could otherwise not used financial services on account of lack of access to use these services. 
+
+Institutional quality (KKM) has a mixed but insignificant relationship with the social performance of MFIs. As expected, asset structure has a positive, albeit insignificant relationship with social performance, given that MFIs that have greater presence in financially under-served communities would tend to serve more financially excluded clients. Likewise, the size of an MFI shows a positive but insignificant relationship with social outreach. 
+
+Again, consistent with the data visualization, younger MFIs have better levels of social performance than older MFIs although the coefficients are not significant in the regression. The result seems odd given that younger MFIs started when the sustainability school was gaining ground, meaning low donations and subsidies. But given that younger MFIs are smaller, they may tend to serve geographically limited areas where they are able to serve more financially excluded clients. The wider coverage by older MFIs makes it hard for them to focus on social goals given the financial implications of sustaining their presence these settings. 
+
+\blandscape
+
+\newpage
+
+```{r}
+soceff_reg_fx <- modelling2(my_data, my_data$soceff.theta_hat)
+
+soceff_reg_fx3 <- modelling2(data3, data3$soceff.theta_hat)
+
+soceff_reg_fx5 <- modelling2(data5, data5$soceff.theta_hat)
+
+soceff_reg_rn <- modelling2(my_data, my_data$soceff.theta_hat, model = "random")
+
+soceff_reg_rn3 <- modelling2(data3, data3$soceff.theta_hat, model = "random")
+
+soceff_reg_rn5 <- modelling2(data5, data5$soceff.theta_hat, model = "random")
+```
+
+
+```{r}
+inference_m4011 <- coeftest(soceff_reg_fx, vcov = vcovBK(soceff_reg_fx, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4111 <- coeftest(soceff_reg_fx3, vcov = vcovBK(soceff_reg_fx3, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4211 <- coeftest(soceff_reg_fx5 , vcov = vcovBK(soceff_reg_fx5, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4311 <- coeftest(soceff_reg_rn, vcov = vcovBK(soceff_reg_rn, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4411 <- coeftest(soceff_reg_rn3, vcov = vcovBK(soceff_reg_rn3, method = "arellano", type="HC1", cluster = "group"))
+
+inference_m4511 <- coeftest(soceff_reg_rn5, vcov = vcovBK(soceff_reg_rn5, method = "arellano", type="HC1", cluster = "group"))
+```
+
+
+
+```{r, results='asis'}
+stargazer(soceff_reg_fx, soceff_reg_fx3, 
+          
+         soceff_reg_fx5, soceff_reg_rn, 
+         
+         soceff_reg_rn3, soceff_reg_rn5,
+         
+         title = "Regression Output for Social Efficiency (Standard Errors in Brackets)", 
+          
+          align = TRUE, font.size = "footnotesize", header = FALSE, 
+         
+         se = list(inference_m4011[,2], inference_m4111[,2], inference_m4211[,2], 
+          
+          inference_m4311[,2], inference_m4411[,2], inference_m4511[,2]),
+         
+          omit = c("year.", "Constant"),
+          
+          add.lines = list(c("Model", "Within", "Within", "Within", 
+                        
+            "Random", "Random", "Random"), 
+            
+            c("Data", "Full", ">=3 Years", ">=5 Years", 
+                                             
+            "Full", ">=3 Years", ">=5 Years")))
+```
+
+\elandscape
+
+\newpage
 
 ## Socio-Financial Efficiency of MFIs
 
