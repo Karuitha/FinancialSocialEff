@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.25)  15 JUL 2021 17:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.25)  15 JUL 2021 20:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -638,6 +638,9 @@ File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
 
 LaTeX Warning: Label `' multiply defined.
 
+
+LaTeX Warning: Label `' multiply defined.
+
 )
 \openout1 = `finsoc_efficiency.aux'.
 
@@ -925,17 +928,17 @@ File: finsoc_efficiency_files/figure-latex/unnamed-chunk-23-1.pdf Graphic file
 (type pdf)
 <use finsoc_efficiency_files/figure-latex/unnamed-chunk-23-1.pdf>
 Package pdftex.def Info: finsoc_efficiency_files/figure-latex/unnamed-chunk-23-
-1.pdf  used on input line 989.
+1.pdf  used on input line 990.
 (pdftex.def)             Requested size: 650.45488pt x 433.63658pt.
 
-LaTeX Warning: Float too large for page by 0.08655pt on input line 991.
+LaTeX Warning: Float too large for page by 0.08655pt on input line 992.
 
 [18pdfTeX warning (ext4): destination with the same identifier (name{figure.4})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.993 \end{landscape}
+l.994 \end{landscape}
                       <./finsoc_efficiency_files/figure-latex/unnamed-chunk-23-
 1.pdf>]
 <finsoc_efficiency_files/figure-latex/unnamed-chunk-24-1.pdf, id=247, 867.24pt 
@@ -944,127 +947,111 @@ File: finsoc_efficiency_files/figure-latex/unnamed-chunk-24-1.pdf Graphic file
 (type pdf)
 <use finsoc_efficiency_files/figure-latex/unnamed-chunk-24-1.pdf>
 Package pdftex.def Info: finsoc_efficiency_files/figure-latex/unnamed-chunk-24-
-1.pdf  used on input line 1001.
+1.pdf  used on input line 1000.
 (pdftex.def)             Requested size: 650.45488pt x 433.63658pt.
-
-LaTeX Warning: Float too large for page by 0.08655pt on input line 1003.
-
-[19pdfTeX warning (ext4): destination with the same identifier (name{figure.5})
- has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.1005 \end{landscape}
-                       <./finsoc_efficiency_files/figure-latex/unnamed-chunk-24
--1.pdf>]
-<finsoc_efficiency_files/figure-latex/unnamed-chunk-25-1.pdf, id=262, 469.755pt
- x 325.215pt>
-File: finsoc_efficiency_files/figure-latex/unnamed-chunk-25-1.pdf Graphic file 
-(type pdf)
-<use finsoc_efficiency_files/figure-latex/unnamed-chunk-25-1.pdf>
-Package pdftex.def Info: finsoc_efficiency_files/figure-latex/unnamed-chunk-25-
-1.pdf  used on input line 1009.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<finsoc_efficiency_files/figure-latex/unnamed-chunk-25-2.pdf, id=263, 469.755pt
- x 325.215pt>
-File: finsoc_efficiency_files/figure-latex/unnamed-chunk-25-2.pdf Graphic file 
-(type pdf)
-<use finsoc_efficiency_files/figure-latex/unnamed-chunk-25-2.pdf>
-Package pdftex.def Info: finsoc_efficiency_files/figure-latex/unnamed-chunk-25-
-2.pdf  used on input line 1010.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 1009--1011
-[][]
- []
-
-[20
+[19
 
 
 
-
- <./finsoc_efficiency_files/figure-latex/unnamed-chunk-25-1.pdf>] [21pdfTeX war
+ <./finsoc_efficiency_files/figure-latex/unnamed-chunk-24-1.pdf>] [20pdfTeX war
 ning (ext4): destination with the same identifier (name{table.4}) has been alre
 ady used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1064 
-        <./finsoc_efficiency_files/figure-latex/unnamed-chunk-25-2.pdf>] [22]
-LaTeX Font Info:    Font shape `T1/SourceSansPro-LF/m/it' will be
-(Font)              scaled to size 8.0pt on input line 1124.
+l.1089 T
+        he size of an MFI is also negatively related to financial efficiency of
 
-Overfull \hbox (44.0837pt too wide) in paragraph at lines 1121--1173
+] [21]
+LaTeX Font Info:    Font shape `T1/SourceSansPro-LF/m/it' will be
+(Font)              scaled to size 8.0pt on input line 1116.
+
+Overfull \hbox (44.0837pt too wide) in paragraph at lines 1113--1165
  [][] 
  []
 
-[23
+[22
 
 pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has
  been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1175 \end{landscape}
-                      ] [24
+l.1167 \end{landscape}
+                      ] [23
 
 ]
-Overfull \hbox (41.75569pt too wide) in paragraph at lines 1245--1297
+Overfull \hbox (41.75569pt too wide) in paragraph at lines 1237--1289
  [][] 
  []
 
-[25
+[24
 
 pdfTeX warning (ext4): destination with the same identifier (name{table.6}) has
  been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1299 \end{landscape}
-                      ] [26
+l.1291 \end{landscape}
+                      ] [25
 
-] [27pdfTeX warning (ext4): destination with the same identifier (name{table.7}
-) has been already used, duplicate ignored
+]
+Overfull \hbox (41.75569pt too wide) in paragraph at lines 1324--1376
+ [][] 
+ []
+
+[26
+
+pdfTeX warning (ext4): destination with the same identifier (name{table.7}) has
+ been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1425 \begin{landscape}
-                        ]
-<finsoc_efficiency_files/figure-latex/unnamed-chunk-34-1.pdf, id=341, 867.24pt 
+l.1378 \end{landscape}
+                      ] [27pdfTeX warning (ext4): destination with the same ide
+ntifier (name{table.8}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.1483 \begin{landscape}
+                        
+
+]
+<finsoc_efficiency_files/figure-latex/unnamed-chunk-36-1.pdf, id=323, 867.24pt 
 x 578.16pt>
-File: finsoc_efficiency_files/figure-latex/unnamed-chunk-34-1.pdf Graphic file 
+File: finsoc_efficiency_files/figure-latex/unnamed-chunk-36-1.pdf Graphic file 
 (type pdf)
-<use finsoc_efficiency_files/figure-latex/unnamed-chunk-34-1.pdf>
-Package pdftex.def Info: finsoc_efficiency_files/figure-latex/unnamed-chunk-34-
-1.pdf  used on input line 1433.
+<use finsoc_efficiency_files/figure-latex/unnamed-chunk-36-1.pdf>
+Package pdftex.def Info: finsoc_efficiency_files/figure-latex/unnamed-chunk-36-
+1.pdf  used on input line 1491.
 (pdftex.def)             Requested size: 650.45488pt x 433.63658pt.
 
-LaTeX Warning: Float too large for page by 0.08655pt on input line 1436.
+LaTeX Warning: Float too large for page by 0.08655pt on input line 1494.
 
 [28
 
-] [29pdfTeX warning (ext4): destination with the same identifier (name{figure.6
+] [29pdfTeX warning (ext4): destination with the same identifier (name{figure.5
 }) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1438 \end{landscape}
-                       <./finsoc_efficiency_files/figure-latex/unnamed-chunk-34
+l.1496 \end{landscape}
+                       <./finsoc_efficiency_files/figure-latex/unnamed-chunk-36
 -1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1440.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1440.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1498.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1498.
 (./finsoc_efficiency.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1440.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1440.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1498.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1498.
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 15507 strings out of 481745
- 233037 string characters out of 5930830
- 547168 words of memory out of 5000000
- 30000 multiletter control sequences out of 15000+600000
+ 15495 strings out of 481745
+ 232316 string characters out of 5930830
+ 547188 words of memory out of 5000000
+ 29990 multiletter control sequences out of 15000+600000
  690105 words of font info for 190 fonts, out of 8000000 for 9000
  891 hyphenation exceptions out of 8191
  43i,17n,43p,1024b,575s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1085,10 +1072,10 @@ r5.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts
 /type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></us
 r/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/pub
 lic/lm/lmsy8.pfb>
-Output written on finsoc_efficiency.pdf (29 pages, 6119741 bytes).
+Output written on finsoc_efficiency.pdf (29 pages, 6114896 bytes).
 PDF statistics:
- 546 PDF objects out of 1000 (max. 8388607)
- 471 compressed objects within 5 object streams
+ 528 PDF objects out of 1000 (max. 8388607)
+ 459 compressed objects within 5 object streams
  118 named destinations out of 1000 (max. 500000)
- 26921 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 26911 words of extra memory for PDF output out of 29859 (max. 10000000)
 
